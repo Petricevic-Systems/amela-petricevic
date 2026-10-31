@@ -1,0 +1,102 @@
+---
+import { link } from '../../utils/url';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SampleTag from '../../components/SampleTag.astro';
+import site from '../../data/site.json';
+import { formatDate } from '../../i18n/bs';
+
+const posts = (await getCollection('pisanje', (p) => import.meta.env.DEV || !p.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const resources = await getCollection('resursi');
+---
+
+<BaseLayout
+  title="Pisanje i materijali"
+  description={`Tekstovi ${site.name} o nastavi, edukaciji nastavnika i projektima, uz besplatne materijale za preuzimanje.`}
+>
+  <PageHeader
+    label="Blog i resursi"
+    title="Pisanje"
+    lead="Iskustva iz učionice i s edukacija, te materijali koje kolege mogu slobodno koristiti."
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="visually-hidden">Objave</h2>
+      <ol class="rows">
+        {
+          posts.map((post) => (
+            <li class="row">
+              <div class="row-year">
+                <time datetime={post.data.date.toISOString()}>{post.data.date.getFullYear()}</time>
+              </div>
+              <article>
+                <p class="tagline">
+                  <span class="role">{formatDate(post.data.date)}</span>
+                  {post.data.tags.map((t) => (
+                    <span>{t}</span>
+                  ))}
+                  {post.data.draft && <span>Nacrt</span>}
+                  <SampleTag show={post.data.sample} />
+                </p>
+                <h3>
+                  <a href={link(`/pisanje/${post.id}`)}>{post.data.title}</a>
+                </h3>
+                <p class="muted">{post.data.summary}</p>
+              </article>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--tint" id="materijali">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="label">Za kolege</span>
+          <h2>Materijali za preuzimanje</h2>
+        </div>
+      </div>
+      <ul class="grid grid--2 resources">
+        {
+          resources.map(({ data }) => (
+            <li>
+              <p class="tagline">
+                <span class="role">{data.format}</span>
+                <SampleTag show={data.sample} />
+              </p>
+              <h3>{data.title}</h3>
+              <p class="muted">{data.description}</p>
+              <a class="more" href={link(data.file)} download>
+                Preuzmi<span class="visually-hidden"> {data.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .rows h3 a {
+    text-decoration: none;
+  }
+  .rows h3 a:hover {
+    text-decoration: underline;
+  }
+  .resources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .resources li {
+    border-top: 1px solid var(--ink);
+    padding-top: 1.25rem;
+  }
+</style>

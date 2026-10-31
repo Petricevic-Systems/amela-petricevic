@@ -1,0 +1,163 @@
+---
+import { link } from '../utils/url';
+import site from '../data/site.json';
+import { nav } from '../i18n/bs';
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => current.startsWith(href);
+const initials = site.name
+  .split(/\s+/)
+  .map((w) => w[0])
+  .join('')
+  .slice(0, 2);
+---
+
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href={link('/')} aria-label={`${site.name} — početna`}>
+      <span class="mono" aria-hidden="true">{initials}</span>
+      <span class="brand-name">{site.name}</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="glavni-meni">Meni</button>
+    <nav id="glavni-meni" aria-label="Glavni meni">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.getElementById('glavni-meni');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    btn.textContent = open ? 'Meni' : 'Zatvori';
+    nav?.classList.toggle('open', !open);
+  });
+</script>
+
+<style>
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 2rem;
+    min-height: 4.5rem;
+    padding-inline: var(--gutter);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--ink);
+    text-decoration: none;
+    padding-block: 0.8rem;
+  }
+  .brand:hover {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .mono {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+  }
+  .brand-name {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .menu-toggle {
+    min-height: 44px;
+    padding: 0 1rem;
+    border: 2px solid var(--ink);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  nav {
+    display: none;
+    width: 100%;
+  }
+  nav.open {
+    display: block;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 1rem;
+  }
+  li a {
+    display: block;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  li a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  li a[aria-current='page'] {
+    color: var(--accent);
+  }
+  @media (min-width: 66rem) {
+    .menu-toggle {
+      display: none;
+    }
+    nav {
+      display: block;
+      width: auto;
+    }
+    ul {
+      display: flex;
+      gap: 1.6rem;
+      padding: 0;
+    }
+    li a {
+      border: 0;
+      padding: 0.4rem 0;
+      font-size: 0.8rem;
+      border-bottom: 2px solid transparent;
+    }
+    li a[aria-current='page'] {
+      color: var(--ink);
+      border-bottom-color: var(--gold);
+    }
+  }
+</style>

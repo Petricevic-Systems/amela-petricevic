@@ -1,0 +1,12 @@
+---
+import { link } from '../utils/url';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+---
+
+<BaseLayout title="Stranica nije pronađena" description="Tražena stranica ne postoji." noindex>
+  <PageHeader title="Stranica nije pronađena" lead="Možda je premještena. Pokušajte s početne stranice.">
+    <a class="btn" href={link('/')}>Na početnu</a>
+  </PageHeader>
+  
+</BaseLayout>

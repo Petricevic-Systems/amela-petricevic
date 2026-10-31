@@ -1,0 +1,132 @@
+---
+import { link } from '../utils/url';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SampleTag from '../components/SampleTag.astro';
+import SourceLink from '../components/SourceLink.astro';
+import Testimonials from '../components/Testimonials.astro';
+import site from '../data/site.json';
+
+const trainings = (await getCollection('edukacije')).sort((a, b) => b.data.year - a.data.year);
+
+const programs = [
+  {
+    title: 'Etos inicijativa',
+    text: 'Univerzalne etičke vrijednosti u školskoj praksi: humanizacija odnosa, partnerstvo s roditeljima i zajednicom, škola bez nasilja.',
+  },
+  {
+    title: 'EMIL',
+    text: 'Interkulturalno i međureligijsko učenje: rad s predrasudama i stereotipima, otvorenost prema drugim kulturama, dijalog.',
+  },
+];
+---
+
+<BaseLayout
+  title="Edukacije za nastavnike"
+  description={`Edukacije koje ${site.name} vodi za nastavnike: Etos inicijativa i EMIL program (TPO Fondacija), interkulturalno učenje i vrijednosti u školi.`}
+>
+  <PageHeader
+    label="Edukacije"
+    title="Edukacije za <em>nastavnike</em>"
+    lead={`Kao trenerica na državnom i regionalnom nivou vodim edukacije za nastavnike širom ${site.region}. Teme dolaze iz učionice, a metode se mogu primijeniti već sutradan.`}
+  >
+    <a class="btn" href={link('/kontakt?tema=edukacija')}>Pozovi me na edukaciju</a>
+  </PageHeader>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="label">Programi</span>
+          <h2>Za koje programe sam certificirana</h2>
+        </div>
+        <a class="more" href={link('/o-meni')}>Certifikati</a>
+      </div>
+      <div class="grid grid--2">
+        {
+          programs.map((p) => (
+            <article class="program">
+              <h3>{p.title}</h3>
+              <p class="muted">{p.text}</p>
+              <p class="small">TPO Fondacija</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="label">Arhiva</span>
+          <h2>Održane edukacije</h2>
+        </div>
+      </div>
+      <ol class="rows">
+        {
+          trainings.map(({ data }) => (
+            <li class="row">
+              <div class="row-year">{data.year}</div>
+              <div>
+                <p class="tagline">
+                  <span class="role">{data.organizer}</span>
+                  <SampleTag show={data.sample} />
+                </p>
+                <h3>{data.title}</h3>
+                <dl class="facts">
+                  <dt>Za koga</dt>
+                  <dd>{data.audience}</dd>
+                  <dt>Teme</dt>
+                  <dd>{data.topic}</dd>
+                  {data.participants && (
+                    <>
+                      <dt>Učesnika</dt>
+                      <dd>{data.participants}</dd>
+                    </>
+                  )}
+                </dl>
+                <SourceLink href={data.source} />
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="label">Utisci</span>
+          <h2>Šta kažu učesnici</h2>
+        </div>
+      </div>
+      <Testimonials />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .program {
+    background: var(--paper-2);
+    border-top: 4px solid var(--gold);
+    padding: 2rem;
+  }
+  .program h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.2rem);
+    text-transform: uppercase;
+  }
+  .program p:last-child {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+</style>

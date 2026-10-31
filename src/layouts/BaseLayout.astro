@@ -1,0 +1,121 @@
+---
+import { link } from '../utils/url';
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import site from '../data/site.json';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  noindex?: boolean;
+  /** Dodatni JSON-LD objekti (npr. Article za tekstove). */
+  schema?: Record<string, unknown>[];
+}
+
+const { title, description, ogType = 'website', ogImage = '/og.png', noindex = false, schema = [] } =
+  Astro.props;
+
+const fullTitle = Astro.url.pathname === '/' ? `${site.name} — ${site.tagline}` : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(link(ogImage), Astro.site);
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': new URL(link('/#person'), Astro.site).href,
+  name: site.name,
+  jobTitle: site.jobTitle,
+  description: site.tagline,
+  url: new URL(link('/'), Astro.site).href,
+  email: `mailto:${site.email}`,
+  sameAs: Object.values(site.social).filter(Boolean),
+  knowsAbout: site.knowsAbout,
+};
+const jsonLd = [person, ...schema];
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {
+      // Demo verzija se ne indeksira u pretraživačima dok je sampleContent uključen.
+      (noindex || site.sampleContent) && <meta name="robots" content="noindex" />
+    }
+    <meta name="theme-color" content="#14213d" />
+    <link rel="icon" href={link('/favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={link('/sitemap-index.xml')} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="bs_BA" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <Font cssVariable="--font-oswald" preload={[{ subset: 'latin' }, { subset: 'latin-ext' }]} />
+    <Font cssVariable="--font-lato" preload={[{ subset: 'latin', weight: 400 }, { subset: 'latin-ext', weight: 400 }]} />
+
+    {
+      site.analytics.plausibleDomain && (
+        <script defer data-domain={site.analytics.plausibleDomain} src="https://plausible.io/js/script.js" />
+      )
+    }
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>
+    {
+      site.sampleContent && (
+        <div class="sample-banner" role="note">
+          <strong>Demo verzija</strong> — podaci s oznakom „Izvor” čekaju potvrdu, a „Primjer” treba zamijeniti.
+        </div>
+      )
+    }
+    <Header />
+    <main id="sadrzaj" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.6rem 1rem;
+    background: var(--dark);
+    color: #fff;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+  .sample-banner {
+    background: #fff4d6;
+    color: #4a3a12;
+    border-bottom: 1px solid #f0dfa8;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    text-align: center;
+    padding: 0.4rem var(--gutter);
+  }
+  main:focus {
+    outline: none;
+  }
+</style>

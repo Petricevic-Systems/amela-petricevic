@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "preporuka-1",
+      "quote": "Edukacija je bila potpuno praktična — već sutradan sam tri metode primijenila u svom razredu.",
+      "author": "[Ime P.]",
+      "role": "učiteljica, [grad]",
+      "permission": true,
+      "sample": true
+    },
+    {
+      "id": "preporuka-2",
+      "quote": "Rijetko sretnete trenericu koja tako dobro razumije stvarnu učionicu. Učesnici su tražili nastavak.",
+      "author": "[Ime P.]",
+      "role": "savjetnica, [pedagoški zavod]",
+      "permission": true,
+      "sample": true
+    },
+    {
+      "id": "preporuka-3",
+      "quote": "Pouzdana partnerica u projektu — jasna komunikacija, rokovi i odlični rezultati.",
+      "author": "[Ime P.]",
+      "role": "koordinator, [NVO partner]",
+      "permission": true,
+      "sample": true
+    }
+  ]
+}

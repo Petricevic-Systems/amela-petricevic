@@ -1,0 +1,12 @@
+---
+import { link } from '../../utils/url';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout title="Hvala na poruci" description="Poruka je poslana." noindex>
+  <PageHeader title="Hvala na poruci!" lead="Poruka je stigla. Javit ću vam se u roku od nekoliko radnih dana.">
+    <a class="btn" href={link('/')}>Nazad na početnu</a>
+  </PageHeader>
+  
+</BaseLayout>

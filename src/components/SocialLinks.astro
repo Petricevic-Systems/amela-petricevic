@@ -1,0 +1,35 @@
+---
+import site from '../data/site.json';
+
+const labels: Record<string, string> = { linkedin: 'LinkedIn', facebook: 'Facebook', instagram: 'Instagram' };
+const links = Object.entries(site.social).filter(([, url]) => url);
+---
+
+<ul class="social">
+  {
+    links.map(([key, url]) => (
+      <li>
+        <a href={url} rel="me noopener" target="_blank">
+          {labels[key] ?? key}
+          <span class="visually-hidden"> (otvara se u novom prozoru)</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-weight: 600;
+  }
+  .social a {
+    display: inline-block;
+    padding-block: 0.4rem;
+  }
+</style>

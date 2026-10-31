@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SampleTag from '../components/SampleTag.astro';
+import SourceLink from '../components/SourceLink.astro';
+import site from '../data/site.json';
+
+const certificates = (await getCollection('certifikati')).sort((a, b) => b.data.year - a.data.year);
+const kindLabels = { certifikat: 'Certifikat', nagrada: 'Nagrada', priznanje: 'Priznanje' };
+
+// Načela sažeta iz njene izjave u profilu ETOS trenera (izvor ispod).
+const principles = [
+  { title: 'Humaniji odnosi u školi', text: 'Škola u kojoj se učenici, nastavnici i roditelji odnose s poštovanjem i uvažavanjem.' },
+  { title: 'Partnerstvo s roditeljima i zajednicom', text: 'Roditelji i lokalna zajednica kao saveznici škole, ne posmatrači.' },
+  { title: 'Škola bez nasilja', text: 'Rad protiv predrasuda, stereotipa i diskriminacije — od prvog razreda.' },
+  { title: 'Škola kao drugi dom', text: 'Mjesto u kojem se vrijednosti ne uče napamet, nego žive svaki dan.' },
+];
+const profiles = [
+  { href: 'https://thinkerica.ba/en/etos-initiative/etos-trainers/', label: 'Profil trenerice — Etos inicijativa' },
+  { href: 'https://thinkerica.ba/en/etos-initiative/emil-trainers/', label: 'Profil trenerice — EMIL program' },
+];
+---
+
+<BaseLayout
+  title="O meni"
+  description={`${site.name}: učiteljica razredne nastave iz Tuzle, certificirana trenerica nastavnika u programima Etos inicijativa i EMIL.`}
+>
+  <PageHeader label="O meni" title="Učiteljica koja educira <em>i kolege</em>" lead={site.longBio} />
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <span class="label">Pristup</span>
+        <h2>U šta vjerujem <SampleTag /></h2>
+        <p class="muted">
+          Sažeto iz moje izjave o tome šta se mijenja u školama koje rade po programu Etos inicijativa.
+        </p>
+        <SourceLink href="https://thinkerica.ba/en/etos-initiative/etos-trainers/" />
+      </div>
+      <ol class="principles">
+        {
+          principles.map((p, i) => (
+            <li>
+              <span class="n">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{p.title}</h3>
+                <p class="muted">{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="label">Kvalifikacije</span>
+          <h2>Certifikati i priznanja</h2>
+        </div>
+      </div>
+      <ul class="rows">
+        {
+          certificates.map(({ data }) => (
+            <li class="row">
+              <div class="row-year">{data.year}</div>
+              <div>
+                <p class="tagline">
+                  <span class="role">{kindLabels[data.kind]}</span>
+                  <span>{data.issuer}</span>
+                  <SampleTag show={data.sample} />
+                </p>
+                <h3>{data.title}</h3>
+                <SourceLink href={data.source} />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <span class="label">Ukratko</span>
+        <h2>Činjenice</h2>
+      </div>
+      <div>
+        <dl class="facts big">
+          <dt>Zanimanje</dt>
+          <dd>Učiteljica razredne nastave; diplomirana ekonomistica</dd>
+          <dt>Grad</dt>
+          <dd>Tuzla, Bosna i Hercegovina</dd>
+          <dt>Treninzi</dt>
+          <dd>Etos inicijativa, EMIL (TPO Fondacija)</dd>
+          <dt>Oblasti</dt>
+          <dd>Obrazovanje, ljudska prava, menadžment, humanizam, mirovne aktivnosti</dd>
+        </dl>
+        <ul class="profiles">
+          {
+            profiles.map((p) => (
+              <li>
+                <a class="more" href={p.href} target="_blank" rel="noopener">
+                  {p.label}
+                  <span class="visually-hidden"> (otvara se u novom prozoru)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .split {
+    display: grid;
+    gap: 2rem 5rem;
+  }
+  @media (min-width: 56rem) {
+    .split {
+      grid-template-columns: 1fr 1.6fr;
+    }
+  }
+  .principles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .principles li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .principles h3 {
+    margin-bottom: 0.3rem;
+  }
+  .principles p {
+    margin: 0;
+  }
+  .n {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    padding-top: 0.5rem;
+  }
+  .big {
+    font-size: 1.05rem;
+    gap: 0.6rem 1.5rem;
+  }
+  .profiles {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+</style>

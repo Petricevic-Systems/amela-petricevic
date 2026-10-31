@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import SampleTag from './SampleTag.astro';
+
+// Prikazuju se samo preporuke za koje je osoba dala dozvolu (permission: true).
+const items = (await getCollection('preporuke')).filter((t) => t.data.permission);
+---
+
+{
+  items.length > 0 && (
+    <div class="grid grid--3">
+      {items.map(({ data }) => (
+        <figure class="quote">
+          <blockquote>
+            <p>„{data.quote}”</p>
+          </blockquote>
+          <figcaption>
+            <span class="who">{data.author}</span>
+            <span class="muted">{data.role}</span>
+            <SampleTag show={data.sample} />
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .quote {
+    margin: 0;
+    padding-top: 1.25rem;
+    border-top: 3px solid var(--gold);
+  }
+  blockquote {
+    margin: 0 0 1.25rem;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  blockquote p {
+    margin: 0;
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+  .who {
+    font-weight: 500;
+  }
+</style>

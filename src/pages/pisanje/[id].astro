@@ -1,0 +1,68 @@
+---
+import { link } from '../../utils/url';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SampleTag from '../../components/SampleTag.astro';
+import site from '../../data/site.json';
+import { formatDate } from '../../i18n/bs';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('pisanje', (p) => import.meta.env.DEV || !p.data.draft);
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, date, summary, tags, sample, draft } = post.data;
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: summary,
+  datePublished: date.toISOString(),
+  inLanguage: site.lang,
+  author: { '@id': new URL(link('/#person'), Astro.site).href },
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+};
+---
+
+<BaseLayout title={title} description={summary} ogType="article" schema={[article]} noindex={draft}>
+  <article class="section">
+    <div class="wrap">
+      <header class="post-head">
+        <p class="tagline">
+          <span class="role"><time datetime={date.toISOString()}>{formatDate(date)}</time></span>
+          {tags.map((t) => <span>{t}</span>)}
+          {draft && <span>Nacrt</span>}
+          <SampleTag show={sample} />
+        </p>
+        <h1>{title}</h1>
+        <p class="lead">{summary}</p>
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+      <p class="back"><a class="more" href={link('/pisanje')}>Sve objave</a></p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-head {
+    max-width: 52rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .post-head h1 {
+    font-size: clamp(2.6rem, 6vw, 4.5rem);
+    margin-top: 0.75rem;
+  }
+  .prose {
+    font-size: 1.125rem;
+  }
+  .back {
+    margin-top: 3rem;
+  }
+</style>

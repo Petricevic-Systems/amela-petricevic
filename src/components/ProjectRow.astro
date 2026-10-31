@@ -1,0 +1,43 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { roleLabels } from '../i18n/bs';
+import SampleTag from './SampleTag.astro';
+import SourceLink from './SourceLink.astro';
+
+interface Props {
+  project: CollectionEntry<'projekti'>;
+}
+const { project } = Astro.props;
+const { title, year, yearEnd, role, partners, outcome, source, sample } = project.data;
+const years = yearEnd ? `${year}–${yearEnd}` : String(year);
+const { Content } = await render(project);
+---
+
+<li class="row" id={project.id}>
+  <div class="row-year">{years}</div>
+  <div>
+    <p class="tagline">
+      <span class="role">{role === 'pokretačica' ? '★ ' : ''}{roleLabels[role]}</span>
+      {partners.length > 0 && <span>{partners.join(' · ')}</span>}
+      <SampleTag show={sample} />
+    </p>
+    <h3>{title}</h3>
+    <div class="body"><Content /></div>
+    <p class="result"><strong>Rezultat.</strong> {outcome}</p>
+    <SourceLink href={source} />
+  </div>
+</li>
+
+<style>
+  .body {
+    max-width: 44rem;
+    color: var(--ink-2);
+  }
+  .body :global(p) {
+    margin-bottom: 0.6rem;
+  }
+  .result {
+    max-width: 44rem;
+    margin-bottom: 0.25rem;
+  }
+</style>

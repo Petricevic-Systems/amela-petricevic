@@ -1,0 +1,41 @@
+{
+  "sampleContent": true,
+  "name": "Amela Petričević",
+  "url": "https://petricevic-systems.github.io/amela-petricevic",
+  "lang": "bs",
+  "tagline": "Učiteljica, edukatorica i pokretačica projekata",
+  "jobTitle": "Učiteljica razredne nastave i trenerica nastavnika",
+  "workplace": "učiteljica u Tuzli",
+  "region": "Bosne i Hercegovine",
+  "shortBio": "Radim s djecom od 1. do 9. razreda u Tuzli i educiram kolege širom Bosne i Hercegovine. Ovdje su na jednom mjestu moje edukacije, radionice, projekti i nastupi u medijima.",
+  "longBio": "Radim kao učiteljica razredne nastave u Tuzli; po prvom zvanju sam diplomirana ekonomistica. Kao trenerica TPO Fondacije u programima Etos inicijativa i EMIL educiram nastavnike o univerzalnim etičkim vrijednostima te interkulturalnom i međureligijskom učenju. Zanimaju me obrazovanje, ljudska prava, menadžment, humanizam i mirovne aktivnosti.",
+  "knowsAbout": [
+    "razredna nastava",
+    "edukacija nastavnika",
+    "interkulturalno učenje",
+    "svjetski etos u školi",
+    "ljudska prava"
+  ],
+  "photos": {
+    "hero": "",
+    "portrait": ""
+  },
+  "stats": {
+    "yearsExperience": "[X]",
+    "teachersTrained": "[X]",
+    "projectsCount": "[X]"
+  },
+  "email": "kontakt@amelapetricevic.ba",
+  "social": {
+    "linkedin": "",
+    "facebook": "",
+    "instagram": ""
+  },
+  "form": {
+    "provider": "formspree",
+    "formspreeId": ""
+  },
+  "analytics": {
+    "plausibleDomain": ""
+  }
+}

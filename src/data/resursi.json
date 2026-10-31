@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "id": "plan-radionice",
+      "title": "Predložak za planiranje radionice",
+      "description": "Jednostavan obrazac za planiranje radionice od 45 ili 90 minuta: cilj, aktivnosti, materijali, evaluacija.",
+      "file": "/resursi/predlozak-plan-radionice.txt",
+      "format": "TXT",
+      "sample": true
+    },
+    {
+      "id": "izlazne-kartice",
+      "title": "Izlazne kartice za kraj sata",
+      "description": "Deset pitanja za brzu provjeru razumijevanja na kraju sata.",
+      "file": "/resursi/izlazne-kartice.txt",
+      "format": "TXT",
+      "sample": true
+    }
+  ]
+}

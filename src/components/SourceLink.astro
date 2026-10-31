@@ -1,0 +1,25 @@
+---
+// Link na javni izvor podatka (npr. vijest organizatora). Ne prikazuje se ako izvor nije upisan.
+interface Props {
+  href?: string;
+}
+const { href } = Astro.props;
+---
+
+{
+  href && (
+    <p class="source">
+      <a href={href} target="_blank" rel="noopener">
+        Izvor: {new URL(href).hostname.replace(/^www\./, '')}
+        <span class="visually-hidden"> (otvara se u novom prozoru)</span>
+      </a>
+    </p>
+  )
+}
+
+<style>
+  .source {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+  }
+</style>

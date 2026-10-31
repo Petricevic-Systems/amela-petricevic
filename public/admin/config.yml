@@ -1,0 +1,198 @@
+# Decap CMS — uređivanje sadržaja iz preglednika na /admin
+# Backend ovisi o hostingu (vidi README):
+#  - Netlify: git-gateway + Netlify Identity (ispod)
+#  - GitHub Pages: backend "github" + OAuth proxy
+backend:
+  name: git-gateway
+  branch: main
+
+# Za lokalno testiranje: `npx decap-server` pa otvoriti http://localhost:4321/admin/
+local_backend: true
+
+locale: hr
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: projekti
+    label: Projekti
+    label_singular: Projekat
+    folder: src/content/projekti
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Naziv, widget: string }
+      - { name: year, label: Godina, widget: number, value_type: int }
+      - { name: yearEnd, label: "Godina završetka (opcionalno)", widget: number, value_type: int, required: false }
+      - name: role
+        label: Moja uloga
+        widget: select
+        options: ["pokretačica", "koordinatorica", "autorica", "trenerica", "učesnica"]
+      - { name: partners, label: Partneri, widget: list, required: false }
+      - { name: outcome, label: Rezultat, widget: text }
+      - { name: featured, label: "Izdvoji na početnoj", widget: boolean, default: false }
+      - { name: source, label: "Izvor (link, opcionalno)", widget: string, required: false }
+      - { name: sample, label: "Primjer (ugasiti za stvarni sadržaj)", widget: boolean, default: false }
+      - { name: body, label: "Opis (šta je urađeno)", widget: markdown }
+
+  - name: edukacije
+    label: Edukacije
+    label_singular: Edukacija
+    folder: src/content/edukacije
+    create: true
+    slug: "{{slug}}-{{year}}"
+    fields:
+      - { name: title, label: Naziv, widget: string }
+      - { name: year, label: Godina, widget: number, value_type: int }
+      - { name: organizer, label: Organizator, widget: string }
+      - { name: audience, label: "Za koga", widget: string }
+      - { name: topic, label: Teme, widget: string }
+      - { name: participants, label: "Broj učesnika", widget: number, value_type: int, required: false }
+      - { name: featured, label: "Izdvoji na početnoj", widget: boolean, default: false }
+      - { name: source, label: "Izvor (link, opcionalno)", widget: string, required: false }
+      - { name: sample, label: "Primjer", widget: boolean, default: false }
+
+  - name: radionice
+    label: Radionice
+    label_singular: Radionica
+    folder: src/content/radionice
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Naziv, widget: string }
+      - { name: description, label: Opis, widget: text }
+      - { name: ageGroup, label: "Uzrast", widget: string }
+      - { name: duration, label: Trajanje, widget: string, required: false }
+      - { name: order, label: "Redoslijed", widget: number, value_type: int, default: 100 }
+      - { name: sample, label: "Primjer", widget: boolean, default: false }
+
+  - name: mediji
+    label: Mediji
+    label_singular: Medijski nastup
+    folder: src/content/mediji
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Naslov, widget: string }
+      - { name: outlet, label: Medij, widget: string }
+      - { name: date, label: Datum, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - name: type
+        label: Vrsta
+        widget: select
+        options: ["intervju", "članak", "TV", "radio", "podcast", "gostovanje", "film"]
+      - { name: link, label: "Link (za članke)", widget: string, required: false }
+      - { name: youtube, label: "YouTube ID (npr. MvsftOEmiEY)", widget: string, required: false }
+      - { name: duration, label: "Trajanje (npr. 9 min)", widget: string, required: false }
+      - { name: thumbnail, label: "Prikaži YouTube sličicu (isključiti ako se vide djeca)", widget: boolean, default: false }
+      - { name: featured, label: "Izdvoji na početnoj", widget: boolean, default: false }
+      - { name: source, label: "Izvor (link, opcionalno)", widget: string, required: false }
+      - { name: sample, label: "Primjer", widget: boolean, default: false }
+
+  - name: pisanje
+    label: Pisanje
+    label_singular: Objava
+    folder: src/content/pisanje
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Naslov, widget: string }
+      - { name: date, label: Datum, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { name: summary, label: Sažetak, widget: text }
+      - { name: tags, label: Oznake, widget: list, required: false }
+      - { name: draft, label: "Nacrt (ne objavljuj)", widget: boolean, default: false }
+      - { name: sample, label: "Primjer", widget: boolean, default: false }
+      - { name: body, label: Tekst, widget: markdown }
+
+  - name: postavke
+    label: Postavke i liste
+    files:
+      - name: site
+        label: Osnovni podaci
+        file: src/data/site.json
+        fields:
+          - { name: sampleContent, label: "Prikaži traku 'Demo verzija'", widget: boolean }
+          - { name: name, label: "Ime i prezime", widget: string }
+          - { name: url, label: "Adresa stranice", widget: string }
+          - { name: lang, label: Jezik, widget: hidden }
+          - { name: tagline, label: Slogan, widget: string }
+          - { name: jobTitle, label: "Zanimanje (za pretraživače)", widget: string }
+          - { name: workplace, label: "Radno mjesto", widget: string }
+          - { name: region, label: "Zemlja/regija", widget: string }
+          - { name: shortBio, label: "Kratka biografija", widget: text }
+          - { name: longBio, label: "O meni", widget: text }
+          - { name: knowsAbout, label: "Oblasti rada (za pretraživače)", widget: list }
+          - name: photos
+            label: Fotografije
+            widget: object
+            fields:
+              - { name: hero, label: "Široka naslovna (bez prepoznatljive djece)", widget: image, required: false }
+              - { name: portrait, label: "Portret", widget: image, required: false }
+          - name: stats
+            label: Brojke
+            widget: object
+            fields:
+              - { name: yearsExperience, label: "Godina iskustva", widget: string }
+              - { name: teachersTrained, label: "Educiranih nastavnika", widget: string }
+              - { name: projectsCount, label: "Realizovanih projekata", widget: string }
+          - { name: email, label: E-mail, widget: string }
+          - name: social
+            label: Društvene mreže
+            widget: object
+            fields:
+              - { name: linkedin, label: LinkedIn, widget: string, required: false }
+              - { name: facebook, label: Facebook, widget: string, required: false }
+              - { name: instagram, label: Instagram, widget: string, required: false }
+          - name: form
+            label: Kontakt obrazac
+            widget: object
+            fields:
+              - { name: provider, label: "Servis", widget: select, options: ["netlify", "formspree"] }
+              - { name: formspreeId, label: "Formspree ID", widget: string, required: false }
+          - name: analytics
+            label: Analitika
+            widget: object
+            fields:
+              - { name: plausibleDomain, label: "Plausible domena (prazno = bez analitike)", widget: string, required: false }
+      - name: certifikati
+        label: Certifikati i priznanja
+        file: src/data/certifikati.json
+        fields:
+          - name: items
+            label: Stavke
+            widget: list
+            fields:
+              - { name: id, label: "ID (bez razmaka)", widget: string }
+              - { name: title, label: Naziv, widget: string }
+              - { name: issuer, label: Izdavač, widget: string }
+              - { name: year, label: Godina, widget: number, value_type: int }
+              - { name: kind, label: Vrsta, widget: select, options: ["certifikat", "nagrada", "priznanje"] }
+              - { name: source, label: "Izvor (link)", widget: string, required: false }
+              - { name: sample, label: Primjer, widget: boolean, default: false }
+      - name: preporuke
+        label: Preporuke
+        file: src/data/preporuke.json
+        fields:
+          - name: items
+            label: Stavke
+            widget: list
+            fields:
+              - { name: id, label: "ID (bez razmaka)", widget: string }
+              - { name: quote, label: Citat, widget: text }
+              - { name: author, label: Autor, widget: string }
+              - { name: role, label: "Uloga / mjesto", widget: string }
+              - { name: permission, label: "Imam dozvolu za objavu", widget: boolean, default: false }
+              - { name: sample, label: Primjer, widget: boolean, default: false }
+      - name: resursi
+        label: Materijali za preuzimanje
+        file: src/data/resursi.json
+        fields:
+          - name: items
+            label: Stavke
+            widget: list
+            fields:
+              - { name: id, label: "ID (bez razmaka)", widget: string }
+              - { name: title, label: Naziv, widget: string }
+              - { name: description, label: Opis, widget: text }
+              - { name: file, label: Datoteka, widget: file }
+              - { name: format, label: "Format (PDF, DOCX…)", widget: string }
+              - { name: sample, label: Primjer, widget: boolean, default: false }

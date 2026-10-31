@@ -1,0 +1,86 @@
+---
+import { link } from '../utils/url';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SampleTag from '../components/SampleTag.astro';
+import site from '../data/site.json';
+
+const workshops = (await getCollection('radionice')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Radionice"
+  description={`Radionice koje ${site.name} nudi za učenike od 1. do 9. razreda i za nastavničke kolektive.`}
+>
+  <PageHeader
+    label="Radionice"
+    title="Radionice za učenike <em>i kolektive</em>"
+    lead="Za škole, biblioteke i organizacije. Trajanje i sadržaj prilagođavam uzrastu i grupi."
+  >
+    <a class="btn" href={link('/kontakt?tema=radionica')}>Zatraži radionicu</a>
+  </PageHeader>
+
+  <section class="section">
+    <div class="wrap">
+      <ol class="list">
+        {
+          workshops.map(({ data }, i) => (
+            <li>
+              <span class="n">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <p class="tagline">
+                  <span class="role">{data.ageGroup}</span>
+                  {data.duration && <span>{data.duration}</span>}
+                  <SampleTag show={data.sample} />
+                </p>
+                <h2 class="h3">{data.title}</h2>
+                <p class="muted">{data.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    border-top: 3px solid var(--gold);
+  }
+  @media (min-width: 52rem) {
+    .list {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 4rem;
+    }
+  }
+  .list li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .n {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    padding-top: 0.25rem;
+  }
+  .h3 {
+    font-family: var(--font-sans);
+    font-size: clamp(1.25rem, 2vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-bottom: 0.4rem;
+  }
+  .list p:last-child {
+    margin: 0;
+  }
+</style>

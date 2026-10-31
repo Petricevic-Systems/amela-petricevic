@@ -1,0 +1,95 @@
+---
+import { link } from '../utils/url';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SampleTag from '../components/SampleTag.astro';
+import SourceLink from '../components/SourceLink.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import site from '../data/site.json';
+import { formatDate } from '../i18n/bs';
+
+const items = (await getCollection('mediji')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const videos = items.filter((i) => i.data.youtube);
+const articles = items.filter((i) => !i.data.youtube);
+---
+
+<BaseLayout
+  title="Mediji"
+  description={`TV gostovanja, intervjui i filmovi u kojima ${site.name} govori o obrazovanju, školi i edukaciji nastavnika.`}
+>
+  <PageHeader
+    label="Za novinare"
+    title="Mediji"
+    lead="TV gostovanja, intervjui i filmovi. Za izjavu ili intervju javite se putem kontakt stranice."
+  >
+    <a class="btn btn--line" href={link('/kontakt?tema=intervju')}>Zatraži intervju</a>
+  </PageHeader>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="visually-hidden">Video</h2>
+      <div class="grid grid--2 videos">
+        {
+          videos.map(({ id, data }) => (
+            <article id={id}>
+              <VideoEmbed id={data.youtube!} title={data.title} outlet={data.outlet} thumbnail={data.thumbnail} embeddable={data.embeddable} />
+              <p class="tagline">
+                <span class="role">{data.outlet}</span>
+                <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+                {data.duration && <span>{data.duration}</span>}
+                <SampleTag show={data.sample} />
+              </p>
+              <h3>{data.title}</h3>
+              <p class="small">
+                <a href={`https://www.youtube.com/watch?v=${data.youtube}`} target="_blank" rel="noopener">
+                  Otvori na YouTubeu<span class="visually-hidden"> (otvara se u novom prozoru)</span>
+                </a>
+              </p>
+              <SourceLink href={data.source} />
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    articles.length > 0 && (
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>Članci i intervjui</h2>
+          </div>
+          <ul class="rows">
+            {articles.map(({ data }) => (
+              <li class="row">
+                <div class="row-year">{data.date.getFullYear()}</div>
+                <div>
+                  <p class="tagline">
+                    <span class="role">{data.outlet}</span>
+                    <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+                    <SampleTag show={data.sample} />
+                  </p>
+                  <h3>{data.link ? <a href={data.link}>{data.title}</a> : data.title}</h3>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .videos {
+    row-gap: 3.5rem;
+  }
+  .videos .tagline {
+    margin-top: 1rem;
+  }
+  .videos h3 {
+    margin-bottom: 0.3rem;
+  }
+</style>

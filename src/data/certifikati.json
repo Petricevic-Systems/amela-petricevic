@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "id": "emil-trener",
+      "title": "Certificirana trenerica za jačanje interkulturalnih i međureligijskih kompetencija (EMIL)",
+      "issuer": "TPO Fondacija",
+      "year": 2020,
+      "kind": "certifikat",
+      "source": "https://tpo.ba/b/novosti/201031%20ZavTotEmil.html",
+      "sample": false
+    },
+    {
+      "id": "etos-trener",
+      "title": "Trenerica Etos inicijative (obuka za edukatore svjetskog etosa)",
+      "issuer": "TPO Fondacija",
+      "year": 2016,
+      "kind": "certifikat",
+      "source": "https://thinkerica.ba/en/etos-initiative/etos-trainers/",
+      "sample": false
+    }
+  ]
+}

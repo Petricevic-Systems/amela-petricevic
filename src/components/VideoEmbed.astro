@@ -1,0 +1,157 @@
+---
+// Video se učitava tek na klik (youtube-nocookie.com): brža stranica, bez YouTube kolačića prije pokretanja.
+interface Props {
+  id: string;
+  title: string;
+  outlet: string;
+  /** false = neutralna kartica umjesto YouTube sličice (npr. kad se na sličici vide djeca). */
+  thumbnail?: boolean;
+  /** false = vlasnik je zabranio ugrađivanje; kartica vodi na YouTube. */
+  embeddable?: boolean;
+}
+const { id, title, outlet, thumbnail = false, embeddable = true } = Astro.props;
+const Tag = embeddable ? 'button' : 'a';
+const tagProps = embeddable
+  ? { type: 'button', 'aria-label': `Pokreni video: ${title}` }
+  : {
+      href: `https://www.youtube.com/watch?v=${id}`,
+      target: '_blank',
+      rel: 'noopener',
+      'aria-label': `Pogledaj na YouTubeu: ${title} (otvara se u novom prozoru)`,
+    };
+---
+
+<div class="video" data-video-id={embeddable ? id : undefined} data-video-title={title}>
+  <Tag class:list={['poster', { plain: !thumbnail }]} {...tagProps}>
+    {
+      thumbnail ? (
+        <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
+      ) : (
+        <span class="plain-inner" aria-hidden="true">
+          <span class="plain-outlet">{outlet}</span>
+          <span class="plain-title">{title}</span>
+        </span>
+      )
+    }
+    {
+      embeddable ? (
+        <span class="play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <path d="M8 5v14l11-7z" fill="currentColor" />
+          </svg>
+        </span>
+      ) : (
+        <span class="external" aria-hidden="true">
+          YouTube ↗
+        </span>
+      )
+    }
+  </Tag>
+  <noscript><a href={`https://www.youtube.com/watch?v=${id}`}>Pogledaj na YouTubeu</a></noscript>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.video[data-video-id]').forEach((box) => {
+    box.querySelector('button')?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${box.dataset.videoId}?autoplay=1&rel=0`;
+      iframe.title = box.dataset.videoTitle ?? 'Video';
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      box.replaceChildren(iframe);
+      iframe.focus();
+    });
+  });
+</script>
+
+<style>
+  .video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+    overflow: hidden;
+  }
+  .video :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .poster {
+    all: unset;
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    display: block;
+  }
+  .poster:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: -3px;
+  }
+  .poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85);
+    transition: filter 0.2s;
+  }
+  .poster:hover img {
+    filter: none;
+  }
+  .plain {
+    background:
+      linear-gradient(135deg, rgb(255 255 255 / 0.04) 25%, transparent 25%) 0 0 / 14px 14px,
+      #33312d;
+    border-bottom: 4px solid var(--gold);
+  }
+  .plain-inner {
+    position: absolute;
+    left: 1.25rem;
+    right: 4.5rem;
+    bottom: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: #fff;
+  }
+  .plain-outlet {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .plain-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    line-height: 1.15;
+  }
+  .external {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .play {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    transition: transform 0.15s;
+  }
+  .poster:hover .play {
+    transform: scale(1.06);
+  }
+</style>

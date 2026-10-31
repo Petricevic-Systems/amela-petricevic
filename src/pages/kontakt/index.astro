@@ -1,0 +1,198 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SocialLinks from '../../components/SocialLinks.astro';
+import site from '../../data/site.json';
+import { link } from '../../utils/url';
+
+// Obrazac: "netlify" (Netlify Forms) ili "formspree" (GitHub Pages; upisati formspreeId u site.json).
+// Dok servis nije povezan, umjesto obrasca se prikazuje poziv na e-mail.
+const useNetlify = site.form.provider === 'netlify';
+const useFormspree = site.form.provider === 'formspree' && Boolean(site.form.formspreeId);
+const formReady = useNetlify || useFormspree;
+const formAttrs = useFormspree
+  ? { action: `https://formspree.io/f/${site.form.formspreeId}` }
+  : { action: link('/kontakt/hvala'), 'data-netlify': 'true', 'netlify-honeypot': 'bot-field' };
+
+const hasSocial = Object.values(site.social).some(Boolean);
+
+const topics = [
+  { value: 'edukacija', label: 'Edukacija za nastavnike' },
+  { value: 'radionica', label: 'Radionica za učenike ili kolektiv' },
+  { value: 'saradnja', label: 'Saradnja na projektu (Erasmus+, eTwinning, NVO)' },
+  { value: 'intervju', label: 'Intervju ili izjava za medije' },
+  { value: 'drugo', label: 'Nešto drugo' },
+];
+---
+
+<BaseLayout
+  title="Kontakt"
+  description={`Kontaktirajte ${site.name} za edukaciju nastavnika, radionicu, saradnju na projektu ili intervju.`}
+>
+  <PageHeader
+    label="Kontakt"
+    title="Razgovarajmo"
+    lead="Za edukacije, radionice, saradnju na projektima ili intervju — pišite mi. Odgovaram u roku od nekoliko radnih dana."
+  />
+
+  <section class="section">
+    <div class="wrap contact-grid">
+      <div class="direct">
+        <h2 class="h3">Direktno</h2>
+        <p class="email">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+        {
+          hasSocial && (
+            <>
+              <h2 class="h3">Društvene mreže</h2>
+              <SocialLinks />
+            </>
+          )
+        }
+        <h2 class="h3">Pišite mi za</h2>
+        <ul class="for">
+          <li>edukacije i stručne skupove za nastavnike</li>
+          <li>radionice za učenike od 1. do 9. razreda</li>
+          <li>partnerstva na Erasmus+ i eTwinning projektima</li>
+          <li>intervjue i izjave o obrazovanju</li>
+        </ul>
+      </div>
+
+      {
+        formReady ? (
+          <form class="form" name="kontakt" method="POST" {...formAttrs}>
+            <input type="hidden" name="form-name" value="kontakt" />
+            <p class="visually-hidden">
+              <label>Ne popunjavajte ovo polje: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            </p>
+
+            <div class="field">
+              <label for="ime">Ime i prezime</label>
+              <input id="ime" name="ime" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="organizacija">Organizacija / škola <span class="opt">(nije obavezno)</span></label>
+              <input id="organizacija" name="organizacija" type="text" autocomplete="organization" />
+            </div>
+            <div class="field">
+              <label for="tema">Tema</label>
+              <select id="tema" name="tema">
+                {topics.map((t) => <option value={t.value}>{t.label}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="poruka">Poruka</label>
+              <textarea id="poruka" name="poruka" rows="6" required></textarea>
+            </div>
+            <p class="note">Podatke koristim samo da bih vam odgovorila. Ne dijelim ih s trećim stranama.</p>
+            <div><button class="btn" type="submit">Pošalji poruku</button></div>
+          </form>
+        ) : (
+          <div class="form pending">
+            <h2 class="h3">Poruka</h2>
+            <p>Obrazac za poruke uskoro. Do tada mi pišite direktno na e-mail.</p>
+            <div>
+              <a class="btn" href={`mailto:${site.email}`}>Pošalji e-mail</a>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Predodabir teme iz linka, npr. /kontakt?tema=edukacija
+  const tema = new URLSearchParams(location.search).get('tema');
+  const select = document.querySelector<HTMLSelectElement>('#tema');
+  if (tema && select && [...select.options].some((o) => o.value === tema)) select.value = tema;
+</script>
+
+<style>
+  .contact-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 56rem) {
+    .contact-grid {
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+    }
+  }
+  .h3 {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 2rem 0 0.6rem;
+  }
+  .direct .h3:first-child {
+    margin-top: 0;
+  }
+  .email {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .for {
+    padding-left: 1.2rem;
+    margin: 0;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  label {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .opt {
+    font-weight: 400;
+    color: var(--ink-2);
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+    font-size: 1rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid #8f8a80;
+    border-radius: 2px;
+    background: var(--white);
+    color: var(--ink);
+    min-height: 48px;
+    width: 100%;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .note {
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+</style>

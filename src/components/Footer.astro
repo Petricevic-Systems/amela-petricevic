@@ -1,0 +1,90 @@
+---
+import site from '../data/site.json';
+import { nav } from '../i18n/bs';
+import SocialLinks from './SocialLinks.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap cols">
+    <div>
+      <p class="name">{site.name}</p>
+      <p class="small muted">Učiteljica • Trenerica nastavnika • Autorica projekata</p>
+    </div>
+    <nav aria-label="Podnožje">
+      <p class="col-label">Stranice</p>
+      <ul>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+    <div>
+      <p class="col-label">Kontakt</p>
+      <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <SocialLinks />
+    </div>
+  </div>
+  <div class="legal">
+    <div class="wrap legal-inner">
+      <p>Copyright © {year} {site.name}</p>
+      <p>Bez kolačića za praćenje</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    padding-top: clamp(3rem, 6vw, 4rem);
+    font-size: 0.95rem;
+  }
+  .site-footer :global(a) {
+    color: var(--ink);
+  }
+  .site-footer :global(a:hover) {
+    color: var(--accent);
+  }
+  .cols {
+    display: grid;
+    gap: 2.5rem;
+    padding-bottom: 3rem;
+  }
+  @media (min-width: 48rem) {
+    .cols {
+      grid-template-columns: 1.4fr 1fr 1fr;
+    }
+  }
+  .name {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  .col-label {
+    color: var(--ink-2);
+    margin-bottom: 0.75rem;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    padding-block: 0.25rem;
+  }
+  .legal {
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+  .legal-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-block: 1.25rem;
+  }
+  .legal p {
+    margin: 0;
+  }
+</style>

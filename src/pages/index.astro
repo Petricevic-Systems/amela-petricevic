@@ -1,0 +1,583 @@
+---
+import { link } from '../utils/url';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroImage from '../components/HeroImage.astro';
+import SampleTag from '../components/SampleTag.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import site from '../data/site.json';
+import { formatDate, plural, roleLabels } from '../i18n/bs';
+
+const allProjects = (await getCollection('projekti')).sort((a, b) => b.data.year - a.data.year);
+const projects = allProjects.filter((p) => p.data.featured).slice(0, 3);
+const certificates = await getCollection('certifikati');
+const media = (await getCollection('mediji')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const videos = media.filter((m) => m.data.youtube && m.data.type !== 'film');
+// Glavni video: najnoviji koji ima sliku (ako nijedan nema, najnoviji).
+const mainVideo = videos.find((v) => v.data.thumbnail) ?? videos[0];
+const otherVideos = videos.filter((v) => v !== mainVideo);
+const outlets = [...new Set(videos.map((m) => m.data.outlet))];
+const tvCount = media.filter((m) => m.data.type === 'TV').length;
+const posts = (await getCollection('pisanje', (p) => !p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const [firstName, ...rest] = site.name.split(' ');
+const lastName = rest.join(' ');
+
+// Istaknuto: brojke izračunate iz stvarnog sadržaja stranice.
+const highlights = [
+  { value: tvCount, label: plural(tvCount, 'TV gostovanje', 'TV gostovanja', 'TV gostovanja') },
+  { value: certificates.length, label: plural(certificates.length, 'certifikat za trenericu', 'certifikata za trenericu', 'certifikata za trenericu') },
+  { value: allProjects.length, label: plural(allProjects.length, 'projekat i program', 'projekta i programa', 'projekata i programa') },
+];
+
+const roles = [
+  {
+    icon: 'book',
+    title: 'Učiteljica',
+    text: 'Razredna nastava u Tuzli. Škola kao zajednica u kojoj se vrijednosti žive svaki dan.',
+    href: link('/o-meni'),
+  },
+  {
+    icon: 'people',
+    title: 'Trenerica nastavnika',
+    text: 'Certificirana trenerica TPO Fondacije za programe Etos inicijativa i EMIL.',
+    href: link('/edukacije'),
+  },
+  {
+    icon: 'bulb',
+    title: 'Autorica projekata',
+    text: 'Školski projekti, filmovi i inicijative koje povezuju učenike, roditelje i zajednicu.',
+    href: link('/projekti'),
+  },
+];
+---
+
+<BaseLayout
+  title="Početna"
+  description={`${site.name} — učiteljica iz Tuzle i trenerica nastavnika (Etos inicijativa, EMIL). Edukacije, radionice, projekti i nastupi u medijima.`}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1 class="wordmark">
+          <span>{firstName}</span>
+          <span class="indent">{lastName}</span>
+        </h1>
+        <p class="roles-line">Učiteljica • Trenerica nastavnika • Autorica projekata</p>
+      </div>
+      <div class="hero-side">
+        <p>{site.shortBio}</p>
+        <div class="btn-row">
+          <a class="btn" href={link('/kontakt?tema=edukacija')}>Pozovi me na edukaciju</a>
+          <a class="btn btn--line" href={link('/projekti')}>Pogledaj projekte</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {site.photos.hero && <HeroImage src={link(site.photos.hero)} alt={`${site.name} na edukaciji za nastavnike`} />}
+
+  <section class="highlights" aria-label="Ukratko">
+    <div class="wrap">
+      <ul>
+        {
+          highlights.map((h) => (
+            <li>
+              <span class="hl-num">{h.value}</span>
+              <span class="hl-label">{h.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="wrap about">
+      {
+        site.photos.portrait ? (
+          <img class="portrait" src={link(site.photos.portrait)} alt={site.name} width="600" height="800" loading="lazy" />
+        ) : (
+          <dl class="fact-card">
+            <div>
+              <dt>Grad</dt>
+              <dd>Tuzla, BiH</dd>
+            </div>
+            <div>
+              <dt>Zanimanje</dt>
+              <dd>Učiteljica razredne nastave</dd>
+            </div>
+            <div>
+              <dt>Trenerica</dt>
+              <dd>Etos inicijativa, EMIL</dd>
+            </div>
+            <div>
+              <dt>Teme</dt>
+              <dd>Vrijednosti u školi, interkulturalno učenje, ljudska prava</dd>
+            </div>
+          </dl>
+        )
+      }
+      <div>
+        <span class="label">O meni</span>
+        <h2>Ko je Amela</h2>
+        <p>{site.longBio}</p>
+        <a class="btn" href={link('/o-meni')}>Pročitaj više</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Oblasti rada</h2>
+        <p>Učionica, edukacija nastavnika i projekti koji izlaze izvan škole</p>
+      </div>
+      <ul class="trio">
+        {
+          roles.map((r) => (
+            <li>
+              <span class="icon" aria-hidden="true">
+                {r.icon === 'book' && (
+                  <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round">
+                    <path d="M6 10c6-2 12-2 18 2v28c-6-4-12-4-18-2z" />
+                    <path d="M42 10c-6-2-12-2-18 2v28c6-4 12-4 18-2z" />
+                  </svg>
+                )}
+                {r.icon === 'people' && (
+                  <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <circle cx="17" cy="16" r="6" />
+                    <circle cx="33" cy="18" r="5" />
+                    <path d="M5 40c1-8 6-12 12-12s11 4 12 12" />
+                    <path d="M29 30c2-2 3-3 5-3 5 0 8 4 9 11" />
+                  </svg>
+                )}
+                {r.icon === 'bulb' && (
+                  <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 32c0-4-6-7-6-14a13 13 0 0 1 26 0c0 7-6 10-6 14z" />
+                    <path d="M18 38h12M20 43h8" />
+                  </svg>
+                )}
+              </span>
+              <h3>{r.title}</h3>
+              <p class="muted">{r.text}</p>
+              <a class="more" href={r.href}>
+                Saznaj više<span class="visually-hidden"> — {r.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    mainVideo && (
+      <section class="section section--dark">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="label">U medijima</span>
+            <h2>Razgovori i gostovanja</h2>
+            <p class="on-dark">{outlets.join(' • ')}</p>
+          </div>
+          <div class="media-grid">
+            <div>
+              <VideoEmbed
+                id={mainVideo.data.youtube!}
+                title={mainVideo.data.title}
+                outlet={mainVideo.data.outlet}
+                thumbnail={mainVideo.data.thumbnail}
+                embeddable={mainVideo.data.embeddable}
+              />
+              <p class="caption">
+                <span class="on-dark small">
+                  {mainVideo.data.outlet} • {formatDate(mainVideo.data.date)}
+                </span>
+                <strong>{mainVideo.data.title}</strong>
+              </p>
+            </div>
+            <ul class="media-list">
+              {otherVideos.map((v) => (
+                <li>
+                  <span class="small on-dark">
+                    {v.data.outlet} • {formatDate(v.data.date)}
+                  </span>
+                  <a href={link(`/mediji#${v.id}`)}>{v.data.title}</a>
+                </li>
+              ))}
+              <li>
+                <a class="btn" href={link('/mediji')}>
+                  Svi nastupi
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Projekti i inicijative</h2>
+        <p>Šta je urađeno, kada, moja uloga i rezultat</p>
+      </div>
+      <ul class="grid grid--3 cards">
+        {
+          projects.map(({ id, data }) => (
+            <li class="card">
+              <span class="card-year">{data.yearEnd ? `${data.year}–${data.yearEnd}` : data.year}</span>
+              <p class="tagline">
+                <span class="role">{roleLabels[data.role]}</span>
+                <SampleTag show={data.sample} />
+              </p>
+              <h3>
+                <a href={link(`/projekti#${id}`)}>{data.title}</a>
+              </h3>
+              <p class="muted clamp">{data.outcome}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="center"><a class="btn btn--line" href={link('/projekti')}>Svi projekti</a></p>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Pisanje</h2>
+        <p>Iskustva iz učionice i s edukacija</p>
+      </div>
+      <ul class="grid grid--3 cards">
+        {
+          posts.map((post) => (
+            <li class="card">
+              <p class="tagline">
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                <SampleTag show={post.data.sample} />
+              </p>
+              <h3>
+                <a href={link(`/pisanje/${post.id}`)}>{post.data.title}</a>
+              </h3>
+              <p class="muted clamp">{post.data.summary}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Planirate edukaciju, projekat ili razgovor?</h2>
+      <p>Edukacije za nastavnike, radionice, partnerstva na projektima i izjave za medije.</p>
+      <a class="btn btn--dark" href={link('/kontakt')}>Kontaktirajte me</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 9vw, 6.5rem);
+  }
+  .hero-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: end;
+  }
+  @media (min-width: 62rem) {
+    .hero-grid {
+      grid-template-columns: auto minmax(20rem, 26rem);
+      justify-content: space-between;
+      gap: 4rem;
+    }
+  }
+  .wordmark {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(3.4rem, 12.5vw, 8.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .indent {
+    padding-left: 0.45em;
+  }
+  .roles-line {
+    margin: 1.4rem 0 0;
+    font-weight: 700;
+    font-size: clamp(0.72rem, 1.5vw, 0.95rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .hero-side p {
+    color: var(--ink-2);
+    font-size: 1.1rem;
+    margin-bottom: 1.75rem;
+  }
+  .hero-side .btn-row .btn {
+    flex: 1 1 auto;
+  }
+
+  .highlights {
+    background: var(--dark);
+    color: #fff;
+    padding-block: clamp(2rem, 5vw, 3rem);
+  }
+  .highlights ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 44rem) {
+    .highlights ul {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .highlights li + li {
+      border-left: 1px solid #3a3a3a;
+      padding-left: 2rem;
+    }
+  }
+  .highlights li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+  .hl-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 5vw, 3.5rem);
+    line-height: 1;
+    color: var(--gold);
+  }
+  .hl-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #e6e6e6;
+  }
+
+  .about {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    max-width: 64rem;
+  }
+  @media (min-width: 52rem) {
+    .about {
+      grid-template-columns: 20rem 1fr;
+      gap: 4rem;
+    }
+  }
+  .portrait {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+  @media (max-width: 51.99rem) {
+    .fact-card {
+      order: 2;
+    }
+  }
+  .fact-card {
+    margin: 0;
+    background: var(--white);
+    border-top: 4px solid var(--gold);
+    padding: 1.75rem;
+    display: grid;
+    gap: 1.1rem;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.06);
+  }
+  .fact-card dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .fact-card dd {
+    margin: 0.15rem 0 0;
+    font-weight: 700;
+  }
+  .about p {
+    color: var(--ink-2);
+    margin-bottom: 1.75rem;
+  }
+
+  .trio {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 3rem;
+    text-align: center;
+  }
+  @media (min-width: 52rem) {
+    .trio {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3.5rem;
+    }
+  }
+  .trio li {
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+  .icon {
+    display: inline-grid;
+    place-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: #fff4d6;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+  .trio p {
+    margin-bottom: 0.9rem;
+  }
+
+  .on-dark {
+    color: #bdbdbd;
+  }
+  .media-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 60rem) {
+    .media-grid {
+      grid-template-columns: 1.7fr 1fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+  }
+  .caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+  .media-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .media-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid #3a3a3a;
+  }
+  .media-list li:first-child {
+    padding-top: 0;
+  }
+  .media-list li:last-child {
+    border: 0;
+    padding-top: 1.75rem;
+    align-items: flex-start;
+  }
+  .media-list a:not(.btn) {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+  .media-list a:not(.btn):hover {
+    color: var(--gold);
+  }
+
+  .cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .card {
+    position: relative;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--gold);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 12px 30px rgb(0 0 0 / 0.08);
+    transform: translateY(-2px);
+  }
+  .section--tint .card {
+    border-color: transparent;
+    border-top-color: var(--gold);
+  }
+  .card-year {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.9rem;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 0.9rem;
+  }
+  .card h3 a {
+    color: var(--ink);
+  }
+  /* Cijela kartica je klikabilna preko linka u naslovu */
+  .card h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .card h3 a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .card:hover {
+      transition: none;
+      transform: none;
+    }
+  }
+
+  .center {
+    text-align: center;
+    margin: 2.75rem 0 0;
+  }
+  .cta {
+    background: var(--gold);
+    padding-block: clamp(3rem, 7vw, 4.5rem);
+    text-align: center;
+  }
+  .cta h2 {
+    margin-bottom: 0.75rem;
+  }
+  .cta p {
+    max-width: 36rem;
+    margin: 0 auto 1.75rem;
+  }
+  .btn--dark {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+  .btn--dark:hover {
+    background: #000;
+    border-color: #000;
+    color: #fff;
+  }
+</style>

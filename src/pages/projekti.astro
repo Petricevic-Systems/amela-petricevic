@@ -1,0 +1,52 @@
+---
+import { link } from '../utils/url';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import site from '../data/site.json';
+
+const projects = (await getCollection('projekti')).sort((a, b) => b.data.year - a.data.year);
+---
+
+<BaseLayout
+  title="Projekti i inicijative"
+  description={`Projekti i inicijative koje je ${site.name} pokrenula, vodila ili u njima učestvovala: Etos inicijativa, EMIL i drugi programi za škole i nastavnike.`}
+>
+  <PageHeader
+    label="Portfolio"
+    title="Projekti i <em>inicijative</em>"
+    lead="Za svaki projekat: šta je urađeno, kada, koja je bila moja uloga i kakav je rezultat. Oznaka ★ znači da sam projekat sama pokrenula."
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="visually-hidden">Svi projekti</h2>
+      <ol class="rows">
+        {projects.map((p) => <ProjectRow project={p} />)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="wrap">
+      <span class="label">Partnerstva</span>
+      <h2 class="white">Tražite partnericu za projekat?</h2>
+      <p class="lead light">
+        Otvorena sam za saradnju sa školama, nevladinim organizacijama i pedagoškim institucijama, uključujući
+        Erasmus+ i eTwinning projekte.
+      </p>
+      <a class="btn" href={link('/kontakt?tema=saradnja')}>Predloži saradnju</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .white {
+    color: #fff;
+  }
+  .light {
+    color: #c9d2e3;
+    margin-bottom: 1.75rem;
+  }
+</style>

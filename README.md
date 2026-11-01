@@ -99,7 +99,7 @@ Pravilo: samo ona, materijali, prostor ili dječji radovi — **nikad prepoznatl
 
 Izvori trenutnih fotografija:
 - učionica, knjige, olovke, biblioteka — [Unsplash](https://unsplash.com/license) (besplatno, bez obaveze navođenja autora);
-- portret (`amela-portret.jpg`) — profil trenerice na thinkerica.ba (TPO Fondacija), samo 180×225 px: **zamijeniti vlastitom fotografijom većeg formata**;
+- fotografije Amele (`amela-studio.jpg` — naslovna, `amela-portret.jpg`, `amela-o-meni.jpg`) — kadrovi iz emisije „Dobar dan TK” (RTVTK, 15. 12. 2021.), izrezani bez logotipa televizije. Za javnu objavu najbolje je zamijeniti ih vlastitim profesionalnim fotografijama ili pitati RTVTK za dozvolu;
 - plakat „Svjetski etos je u nama” — mreza-mira.net; hodnik s crtežima jabuka — bhstring.net (njen autorski tekst iz 2018.). Prije javne objave potvrditi s autorima/školom.
 
 ## Objava (deploy)

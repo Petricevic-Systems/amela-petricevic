@@ -97,16 +97,11 @@ const roles = [
   <section class="about-section">
     <div class="wrap about">
       <div class="about-media">
-        <Image src={images.about.src} alt={images.about.alt} widths={[500, 900]} sizes="(min-width: 52rem) 24rem, 100vw" />
+        <Image src={images.about.src} alt={images.about.alt} widths={[400, 700]} sizes="(min-width: 52rem) 24rem, 100vw" />
       </div>
       <div class="about-card">
-        <div class="who">
-          <Image class="avatar" src={images.portrait.src} alt={images.portrait.alt} width={160} height={200} />
-          <div>
-            <span class="label">O meni</span>
-            <h2>O Ameli</h2>
-          </div>
-        </div>
+        <span class="label">O meni</span>
+        <h2>O Ameli</h2>
         <p>{site.longBio}</p>
         <a class="btn" href={link('/o-meni')}>Pročitaj cijelu biografiju</a>
       </div>
@@ -385,7 +380,8 @@ const roles = [
   }
   @media (max-width: 51.99rem) {
     .about-media :global(img) {
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 1 / 1;
+      object-position: center 25%;
     }
   }
   .about-card {

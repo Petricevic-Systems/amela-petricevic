@@ -34,16 +34,11 @@ const profiles = [
   <section class="section bio-section">
     <div class="wrap bio">
       <div class="bio-media">
-        <Image src={images.poster.src} alt={images.poster.alt} widths={[500, 850]} sizes="(min-width: 52rem) 26rem, 100vw" />
+        <Image src={images.portrait.src} alt={images.portrait.alt} widths={[400, 720]} sizes="(min-width: 52rem) 26rem, 100vw" />
       </div>
       <div class="bio-card">
-        <div class="who">
-          <Image class="avatar" src={images.portrait.src} alt={images.portrait.alt} width={160} height={200} />
-          <div>
-            <span class="label">Biografija</span>
-            <h2>Ko sam</h2>
-          </div>
-        </div>
+        <span class="label">Biografija</span>
+        <h2>Ko sam</h2>
         <p>{site.longBio}</p>
         <a class="btn" href={link('/kontakt')}>Kontaktirajte me</a>
       </div>

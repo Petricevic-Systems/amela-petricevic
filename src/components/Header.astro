@@ -5,11 +5,6 @@ import { nav } from '../i18n/bs';
 
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string) => current.startsWith(href);
-const initials = site.name
-  .split(/\s+/)
-  .map((w) => w[0])
-  .join('')
-  .slice(0, 2);
 // Kontakt je zasebno dugme desno, pa ga nema u glavnom meniju.
 const menu = nav.filter((item) => !item.href.endsWith('/kontakt'));
 ---
@@ -17,7 +12,6 @@ const menu = nav.filter((item) => !item.href.endsWith('/kontakt'));
 <header class="site-header">
   <div class="bar">
     <a class="brand" href={link('/')} aria-label={`${site.name} — početna`}>
-      <span class="badge" aria-hidden="true">{initials}</span>
       <span class="brand-name">{site.name}</span>
     </a>
     <nav id="glavni-meni" aria-label="Glavni meni">
@@ -79,25 +73,13 @@ const menu = nav.filter((item) => !item.href.endsWith('/kontakt'));
     color: var(--ink);
     text-decoration: none;
   }
-  .badge {
-    display: grid;
-    place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: var(--dark);
-    color: #fff;
+  .brand-name {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.45rem;
     letter-spacing: 0.02em;
-    box-shadow: inset 0 0 0 2px var(--accent-soft);
-  }
-  .brand-name {
-    font-weight: 900;
-    font-size: 1rem;
-    letter-spacing: 0.04em;
     text-transform: uppercase;
+    line-height: 1;
   }
   .contact {
     display: none;

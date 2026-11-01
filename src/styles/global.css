@@ -15,9 +15,10 @@
   --accent-hover: #5e4613;
   --accent-soft: #c9a24d;
   --shadow: 0 10px 30px rgb(20 20 20 / 0.07);
-  /* --font-oswald i --font-lato definira Astro (astro.config.mjs → fonts), uz sistemske rezervne fontove. */
+  /* Fontove definira Astro (astro.config.mjs → fonts); svi podržavaju č, ć, đ, š, ž. */
   --font-display: var(--font-oswald, 'Arial Narrow', sans-serif);
-  --font-sans: var(--font-lato, system-ui, sans-serif);
+  --font-head: var(--font-montserrat, system-ui, sans-serif);
+  --font-sans: var(--font-inter, system-ui, sans-serif);
   --wrap: 72rem;
   --gutter: clamp(1rem, 4vw, 2.5rem);
 }
@@ -51,8 +52,8 @@ body {
 /* Naslovi: teški Lato velikim slovima (kao „TEACHING PHILOSOPHY”) */
 h1,
 h2 {
-  font-family: var(--font-sans);
-  font-weight: 900;
+  font-family: var(--font-head);
+  font-weight: 800;
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: 0.005em;
@@ -66,7 +67,7 @@ h2 {
   font-size: clamp(1.7rem, 3.6vw, 2.4rem);
 }
 h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-head);
   font-weight: 700;
   font-size: clamp(1.15rem, 2vw, 1.35rem);
   line-height: 1.3;
@@ -166,9 +167,9 @@ svg {
 
 .label {
   display: block;
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 900;
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
@@ -203,9 +204,10 @@ svg {
   background: var(--gold);
   color: var(--ink);
   font: inherit;
-  font-size: 0.9rem;
+  font-family: var(--font-head);
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
@@ -243,7 +245,8 @@ svg {
 
 /* „Pročitaj više >” */
 .more {
-  font-size: 0.85rem;
+  font-family: var(--font-head);
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -308,8 +311,8 @@ svg {
   }
 }
 .row-year {
-  font-family: var(--font-sans);
-  font-weight: 900;
+  font-family: var(--font-head);
+  font-weight: 800;
   font-size: 1.6rem;
   line-height: 1.1;
   color: var(--accent);
@@ -320,7 +323,8 @@ svg {
 }
 
 .tagline {
-  font-size: 0.8rem;
+  font-family: var(--font-head);
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -373,7 +377,7 @@ svg {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  font-weight: 900;
+  font-weight: 800;
   font-size: 2.5rem;
   text-transform: uppercase;
   color: rgb(255 255 255 / 0.9);

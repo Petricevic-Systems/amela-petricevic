@@ -1,6 +1,15 @@
 {
   "items": [
     {
+      "id": "nagrada-nacrtaj-vrijednosti",
+      "title": "Prva nagrada za osnovne škole — konkurs „Nacrtaj vrijednosti” (Etos inicijativa), za rad mojih učenika",
+      "issuer": "TPO Fondacija",
+      "year": 2018,
+      "kind": "nagrada",
+      "source": "https://www.mreza-mira.net/vijesti/aktivnosti-mreze/ethos-initiative-universal-values-in-local-context/",
+      "sample": false
+    },
+    {
       "id": "emil-trener",
       "title": "Certificirana trenerica za jačanje interkulturalnih i međureligijskih kompetencija (EMIL)",
       "issuer": "TPO Fondacija",

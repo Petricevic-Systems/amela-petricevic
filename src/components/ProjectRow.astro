@@ -1,6 +1,7 @@
 ---
 // Projekat kao stavka s linijom ispred naslova; ispod: godina, uloga, partneri, opis, rezultat.
 import { render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import { roleLabels } from '../i18n/bs';
 import SampleTag from './SampleTag.astro';
 import SourceLink from './SourceLink.astro';
@@ -11,12 +12,18 @@ interface Props {
   full?: boolean;
 }
 const { project, full = true } = Astro.props;
-const { title, year, yearEnd, role, partners, outcome, source, sample } = project.data;
+const { title, year, yearEnd, role, partners, outcome, source, sample, image, imageAlt } = project.data;
 const years = yearEnd ? `${year}–${yearEnd}` : String(year);
 const { Content } = await render(project);
 ---
 
-<li class="line-item project" id={project.id}>
+<li class:list={['line-item', 'project', { 'with-image': full && image }]} id={project.id}>
+  {
+    full && image && (
+      <Image class="thumb" src={image} alt={imageAlt} widths={[400, 700]} sizes="(min-width: 56rem) 20rem, 100vw" />
+    )
+  }
+  <div class="text">
   <h3>{title}</h3>
   <p class="caption">
     <strong class="years">{years}</strong> · <span class="role">{role === 'pokretačica' ? '★ ' : ''}{roleLabels[role]}</span>
@@ -28,6 +35,7 @@ const { Content } = await render(project);
     <p class="result"><strong>Rezultat:</strong> {outcome}</p>
     {full && <SourceLink href={source} />}
   </div>
+  </div>
 </li>
 
 <style>
@@ -37,6 +45,22 @@ const { Content } = await render(project);
   }
   .project:first-child {
     padding-top: 0;
+  }
+  .with-image {
+    display: grid;
+    gap: 1.5rem 2.5rem;
+  }
+  @media (min-width: 56rem) {
+    .with-image {
+      grid-template-columns: 20rem 1fr;
+      align-items: start;
+    }
+  }
+  .project :global(.thumb) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
   }
   .years {
     color: var(--ink);

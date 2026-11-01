@@ -121,12 +121,6 @@ collections:
           - { name: shortBio, label: "Kratka biografija", widget: text }
           - { name: longBio, label: "O meni", widget: text }
           - { name: knowsAbout, label: "Oblasti rada (za pretraživače)", widget: list }
-          - name: photos
-            label: Fotografije
-            widget: object
-            fields:
-              - { name: hero, label: "Široka naslovna (bez prepoznatljive djece)", widget: image, required: false }
-              - { name: portrait, label: "Portret", widget: image, required: false }
           - name: stats
             label: Brojke
             widget: object

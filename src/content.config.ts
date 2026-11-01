@@ -14,13 +14,16 @@ const fromItems = (text: string) => JSON.parse(text).items;
 
 const projekti = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projekti' }),
-  schema: z.object({
+  // image: putanja do slike relativno od .md datoteke (npr. "../../assets/images/x.jpg")
+  schema: ({ image }) => z.object({
     title: z.string(),
     year: z.number(),
     yearEnd: z.number().optional(),
-    role: z.enum(['pokretačica', 'koordinatorica', 'autorica', 'trenerica', 'učesnica']),
+    role: z.enum(['pokretačica', 'voditeljica', 'koordinatorica', 'autorica', 'trenerica', 'učesnica']),
     partners: z.array(z.string()).default([]),
     outcome: z.string(),
+    image: image().optional(),
+    imageAlt: z.string().default(''),
     featured: z.boolean().default(false),
     source,
     sample,
@@ -77,11 +80,12 @@ const mediji = defineCollection({
 
 const pisanje = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pisanje' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     date: z.coerce.date(),
     summary: z.string(),
     tags: z.array(z.string()).default([]),
+    image: image().optional(),
     draft: z.boolean().default(false),
     sample,
   }),

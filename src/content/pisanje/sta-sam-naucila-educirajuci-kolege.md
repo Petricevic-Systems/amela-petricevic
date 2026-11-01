@@ -3,6 +3,7 @@ title: "Šta sam naučila educirajući kolege širom BiH"
 date: "2025-06-02"
 summary: "Nakon stotina sati edukacija: pet lekcija o tome kako odrasli uče i zašto je praksa važnija od prezentacije."
 tags: ["edukacije","nastavnici","profesionalni razvoj"]
+image: "../../assets/images/pisanje-ruke.jpg"
 sample: true
 ---
 

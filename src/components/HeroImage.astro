@@ -1,55 +1,29 @@
 ---
-// Široka fotografija ispod naslova na početnoj.
-// Kad stigne fotografija: stavite je u public/images/hero.jpg (min. 2000 px širine) i upišite "/images/hero.jpg" u site.json → photos.hero.
-// Pravilo: samo ona, materijali ili ruke — nikad prepoznatljiva djeca.
+// Široka fotografija preko cijele širine ispod imena na početnoj (kao kod uzora).
+// Pravilo: samo ona, materijali ili prostor — nikad prepoznatljiva djeca.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
-  src?: string;
-  alt?: string;
+  src: ImageMetadata;
+  alt: string;
 }
-const { src, alt = '' } = Astro.props;
+const { src, alt } = Astro.props;
 ---
 
 <figure class="hero-image">
-  {
-    src ? (
-      <img src={src} alt={alt} width="2000" height="900" fetchpriority="high" />
-    ) : (
-      <div class="placeholder" role="img" aria-label="Mjesto za fotografiju">
-        <span>
-          [Fotografija: Amela na edukaciji ili u učionici — široki kadar, bez prepoznatljive djece]
-        </span>
-      </div>
-    )
-  }
+  <Image src={src} alt={alt} widths={[800, 1400, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
 </figure>
 
 <style>
   .hero-image {
     margin: 0;
   }
-  img,
-  .placeholder {
+  .hero-image :global(img) {
     display: block;
     width: 100%;
-    aspect-ratio: 20 / 9;
+    height: clamp(18rem, 48vw, 36rem);
     object-fit: cover;
-  }
-  @media (max-width: 40rem) {
-    img,
-    .placeholder {
-      aspect-ratio: 4 / 3;
-    }
-  }
-  .placeholder {
-    display: grid;
-    place-items: center;
-    padding: 1.5rem;
-    text-align: center;
-    background:
-      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.035) 0 2px, transparent 2px 14px),
-      linear-gradient(160deg, #3a3a3a, var(--dark));
-    color: #bdbdbd;
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
+    object-position: center 60%;
   }
 </style>

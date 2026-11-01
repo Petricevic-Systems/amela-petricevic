@@ -13,6 +13,7 @@ export const nav = [
 
 export const roleLabels: Record<string, string> = {
   pokretačica: 'Pokretačica',
+  voditeljica: 'Voditeljica',
   koordinatorica: 'Koordinatorica',
   autorica: 'Autorica',
   trenerica: 'Trenerica',

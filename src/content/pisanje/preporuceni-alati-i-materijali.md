@@ -3,6 +3,7 @@ title: "Preporučeni alati i materijali"
 date: "2025-01-20"
 summary: "Lista alata, knjiga i materijala koje koristim u razredu i na edukacijama — provjereno u praksi."
 tags: ["resursi","digitalni alati","materijali"]
+image: "../../assets/images/polica-knjiga.jpg"
 sample: true
 ---
 

@@ -87,18 +87,20 @@ featured: true
 
 Video se učitava tek na klik (youtube-nocookie.com), pa stranica ostaje brza i bez YouTube kolačića. Ako je vlasnik videa zabranio ugrađivanje, dodajte `embeddable: false` — kartica će voditi na YouTube.
 
-Najnoviji nastup automatski se prikazuje na početnoj („Najnovije”) i kao glavni video u sekciji „U medijima”.
+Tri najnovija video nastupa automatski se prikazuju na početnoj u sekciji „U medijima”.
 
-### Fotografija na početnoj
+### Fotografije
 
-Samo ona, materijali ili ruke — **nikad prepoznatljiva djeca**. Stavite slike u `public/images/` i upišite putanje u `src/data/site.json`:
+Sve fotografije su u `src/assets/images/`, a raspored je u `src/data/images.ts` (naslovna, portret, slika u bloku „O meni”, zaglavlja stranica). Za zamjenu: stavite novu datoteku u `src/assets/images/` i promijenite `import` u `images.ts`. Astro ih pri buildu sam smanjuje i pretvara u WebP.
 
-```json
-"photos": { "hero": "/images/hero.jpg", "portrait": "/images/portret.jpg" }
-```
+Slika projekta ili objave upisuje se u njegovu `.md` datoteku: `image: "../../assets/images/naziv.jpg"` i `imageAlt: "opis"`.
 
-- `hero` — široka fotografija ispod imena (min. 2000 px širine). Bez nje se prikazuje samo traka s brojkama.
-- `portrait` — uspravni portret u bloku „O meni”. Bez njega se prikazuje kartica s osnovnim podacima.
+Pravilo: samo ona, materijali, prostor ili dječji radovi — **nikad prepoznatljiva lica djece**.
+
+Izvori trenutnih fotografija:
+- učionica, knjige, olovke, biblioteka — [Unsplash](https://unsplash.com/license) (besplatno, bez obaveze navođenja autora);
+- portret (`amela-portret.jpg`) — profil trenerice na thinkerica.ba (TPO Fondacija), samo 180×225 px: **zamijeniti vlastitom fotografijom većeg formata**;
+- plakat „Svjetski etos je u nama” — mreza-mira.net; hodnik s crtežima jabuka — bhstring.net (njen autorski tekst iz 2018.). Prije javne objave potvrditi s autorima/školom.
 
 ## Objava (deploy)
 

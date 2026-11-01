@@ -1,11 +1,13 @@
 ---
-title: "Kratki film „Škola je naš drugi dom”"
+title: "Etos u školi: film i nagrađeni plakat"
 year: 2018
 role: autorica
 partners: ["TPO Fondacija (Etos inicijativa)"]
-outcome: "Prvi od tri kratka filma kojima je Etos inicijativa promovirana u BiH; u filmu učenici govore o univerzalnim etičkim vrijednostima koje njeguju u svojoj školi."
+outcome: "Autorica filma „Škola je naš drugi dom” kojim je promovirana Etos inicijativa; moji učenici osvojili su prvu nagradu za osnovne škole na konkursu „Nacrtaj vrijednosti” (završna konferencija, Sarajevo, 19. oktobra 2018.)."
 featured: true
-source: "https://www.tpo.ba/b/novosti5.html"
+source: "https://www.mreza-mira.net/vijesti/aktivnosti-mreze/ethos-initiative-universal-values-in-local-context/"
+image: "../../assets/images/plakat-svjetski-etos.jpg"
+imageAlt: "Dječji plakat „Svjetski etos je u nama” s crtežima vrijednosti"
 sample: false
 ---
-Kratki film koji sam snimila s učenicima svoje škole u Tuzli, u okviru programa Etos inicijativa, uz podršku TPO Fondacije.
+U okviru Etos inicijative TPO Fondacije snimila sam s učenicima kratki film o univerzalnim etičkim vrijednostima koje njegujemo u školi. Na završnoj konferenciji učenici su predstavili vrijednosti koje žive u svojoj školi, a njihov plakat „Svjetski etos je u nama” osvojio je prvu nagradu.

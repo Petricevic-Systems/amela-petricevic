@@ -1,19 +1,31 @@
 ---
-// Zaglavlje unutrašnje stranice: široka traka s naslovom na sredini (kao „EDUCATOR”).
-// Ako se proslijedi fotografija (image), prikazuje se iza naslova uz zatamnjenje.
-import { link } from '../utils/url';
+// Zaglavlje unutrašnje stranice: fotografija preko cijele širine, zatamnjena, s naslovom na sredini.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 interface Props {
   label?: string;
   title: string;
   lead?: string;
-  image?: string;
+  image?: ImageMetadata;
 }
 const { label, title, lead, image } = Astro.props;
-const bg = image ? `background-image: linear-gradient(rgb(15 58 63 / 0.6), rgb(15 58 63 / 0.75)), url(${link(image)})` : undefined;
 ---
 
-<header class="page-header" style={bg}>
+<header class:list={['page-header', { 'has-image': image }]}>
+  {
+    image && (
+      <Image
+        class="bg"
+        src={image}
+        alt=""
+        widths={[800, 1400, 2200]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )
+  }
   <div class="wrap inner">
     {label && <span class="label">{label}</span>}
     <h1 set:html={title} />
@@ -24,36 +36,59 @@ const bg = image ? `background-image: linear-gradient(rgb(15 58 63 / 0.6), rgb(1
 
 <style>
   .page-header {
-    background:
-      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.04) 0 2px, transparent 2px 16px),
-      radial-gradient(60rem 30rem at 85% 0%, var(--dark-2), transparent 70%),
-      var(--dark);
-    background-size: cover;
-    background-position: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--dark);
     color: #fff;
-    padding-block: clamp(4rem, 11vw, 7.5rem);
+    padding-block: clamp(5rem, 13vw, 9rem);
     text-align: center;
   }
+  .bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.35);
+  }
+  .has-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(rgb(20 20 20 / 0.55), rgb(20 20 20 / 0.72));
+  }
   .inner {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   .label {
-    color: var(--accent-soft);
+    color: var(--gold);
   }
   h1 {
     max-width: 22ch;
     margin-bottom: 0;
-    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    letter-spacing: 0.02em;
     color: #fff;
   }
+  h1::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 2px;
+    margin: 1.4rem auto 0;
+    background: var(--gold);
+  }
   h1 :global(em) {
-    color: var(--accent-soft);
+    color: var(--gold);
   }
   .lead {
-    margin: 1.25rem auto 1.75rem;
-    color: #c9dbd9;
+    margin: 1.4rem auto 1.9rem;
+    color: #e4e0d8;
   }
   .page-header :global(.btn--line) {
     border-color: #fff;
@@ -61,6 +96,6 @@ const bg = image ? `background-image: linear-gradient(rgb(15 58 63 / 0.6), rgb(1
   }
   .page-header :global(.btn--line:hover) {
     background: #fff;
-    color: var(--dark);
+    color: var(--ink);
   }
 </style>

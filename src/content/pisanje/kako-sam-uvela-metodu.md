@@ -3,6 +3,7 @@ title: "Kako sam uvela aktivne metode u razred"
 date: "2025-09-15"
 summary: "Prvih šest sedmica s novom metodom: šta je uspjelo, šta nije i šta bih danas uradila drugačije."
 tags: ["praksa","metode","razredna nastava"]
+image: "../../assets/images/pisanje-olovka.jpg"
 sample: true
 ---
 

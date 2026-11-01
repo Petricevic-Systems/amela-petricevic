@@ -1,4 +1,5 @@
 ---
+import { images } from '../data/images';
 import { link } from '../utils/url';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -13,7 +14,7 @@ const workshops = (await getCollection('radionice')).sort((a, b) => a.data.order
   title="Radionice"
   description={`Radionice koje ${site.name} nudi za učenike od 1. do 9. razreda i za nastavničke kolektive.`}
 >
-  <PageHeader
+  <PageHeader image={images.pages.radionice}
     label="Radionice"
     title="Radionice za učenike <em>i kolektive</em>"
     lead="Za škole, biblioteke i organizacije. Trajanje i sadržaj prilagođavam uzrastu i grupi."

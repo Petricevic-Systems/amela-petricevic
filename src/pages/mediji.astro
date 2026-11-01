@@ -1,4 +1,5 @@
 ---
+import { images } from '../data/images';
 import { link } from '../utils/url';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -18,7 +19,7 @@ const articles = items.filter((i) => !i.data.youtube);
   title="Mediji"
   description={`TV gostovanja, intervjui i filmovi u kojima ${site.name} govori o obrazovanju, školi i edukaciji nastavnika.`}
 >
-  <PageHeader
+  <PageHeader image={images.pages.mediji}
     label="Za novinare"
     title="Mediji"
     lead="TV gostovanja, intervjui i filmovi. Za izjavu ili intervju javite se putem kontakt stranice."

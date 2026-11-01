@@ -1,4 +1,5 @@
 ---
+import { images } from '../data/images';
 import { link } from '../utils/url';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -13,10 +14,10 @@ const projects = (await getCollection('projekti')).sort((a, b) => b.data.year - 
   title="Projekti i inicijative"
   description={`Projekti i inicijative koje je ${site.name} pokrenula, vodila ili u njima učestvovala: Etos inicijativa, EMIL i drugi programi za škole i nastavnike.`}
 >
-  <PageHeader
+  <PageHeader image={images.pages.projekti}
     label="Portfolio"
     title="Projekti i <em>inicijative</em>"
-    lead="Za svaki projekat: šta je urađeno, kada, koja je bila moja uloga i kakav je rezultat. Oznaka ★ znači da sam projekat sama pokrenula."
+    lead="Za svaki projekat: šta je urađeno, kada, koja je bila moja uloga i kakav je rezultat."
   />
 
   <section class="section">

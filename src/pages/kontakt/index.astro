@@ -1,4 +1,5 @@
 ---
+import { images } from '../../data/images';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import SocialLinks from '../../components/SocialLinks.astro';
@@ -29,7 +30,7 @@ const topics = [
   title="Kontakt"
   description={`Kontaktirajte ${site.name} za edukaciju nastavnika, radionicu, saradnju na projektu ili intervju.`}
 >
-  <PageHeader
+  <PageHeader image={images.pages.kontakt}
     label="Kontakt"
     title="Razgovarajmo"
     lead="Za edukacije, radionice, saradnju na projektima ili intervju — pišite mi. Odgovaram u roku od nekoliko radnih dana."

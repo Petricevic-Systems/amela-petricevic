@@ -1,4 +1,5 @@
 ---
+import { images } from '../data/images';
 import { link } from '../utils/url';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -26,7 +27,7 @@ const programs = [
   title="Edukacije za nastavnike"
   description={`Edukacije koje ${site.name} vodi za nastavnike: Etos inicijativa i EMIL program (TPO Fondacija), interkulturalno učenje i vrijednosti u školi.`}
 >
-  <PageHeader
+  <PageHeader image={images.pages.edukacije}
     label="Edukacije"
     title="Edukacije za <em>nastavnike</em>"
     lead={`Kao trenerica na državnom i regionalnom nivou vodim edukacije za nastavnike širom ${site.region}. Teme dolaze iz učionice, a metode se mogu primijeniti već sutradan.`}

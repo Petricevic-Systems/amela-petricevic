@@ -26,31 +26,32 @@ const resources = await getCollection('resursi');
   <section class="section">
     <div class="wrap">
       <h2 class="visually-hidden">Objave</h2>
-      <ol class="rows">
+      <ul class="cards grid grid--3">
         {
           posts.map((post) => (
-            <li class="row">
-              <div class="row-year">
-                <time datetime={post.data.date.toISOString()}>{post.data.date.getFullYear()}</time>
+            <li class="card">
+              <div class="card-media card-media--text" aria-hidden="true">
+                {post.data.title.charAt(0)}
+                <span class="card-tag">{post.data.tags[0] ?? 'Blog'}</span>
               </div>
-              <article>
+              <article class="card-body">
                 <p class="tagline">
-                  <span class="role">{formatDate(post.data.date)}</span>
-                  {post.data.tags.map((t) => (
-                    <span>{t}</span>
-                  ))}
+                  <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
                   {post.data.draft && <span>Nacrt</span>}
                   <SampleTag show={post.data.sample} />
                 </p>
                 <h3>
                   <a href={link(`/pisanje/${post.id}`)}>{post.data.title}</a>
                 </h3>
-                <p class="muted">{post.data.summary}</p>
+                <p class="muted clamp">{post.data.summary}</p>
+                <span class="more" aria-hidden="true">
+                  Pročitaj više
+                </span>
               </article>
             </li>
           ))
         }
-      </ol>
+      </ul>
     </div>
   </section>
 

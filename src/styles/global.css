@@ -1,15 +1,17 @@
 :root {
   --paper: #ffffff;
-  --paper-2: #f3f1ec;
+  --paper-2: #eef3f2;
   --white: #ffffff;
-  --ink: #222222;
-  --ink-2: #555555;
-  --line: #e2ded5;
-  --dark: #1c1c1c;
-  /* Topli akcent: puna boja za dugmad i trake, tamnija nijansa za tekst (kontrast) */
-  --gold: #f2a900;
-  --gold-hover: #d99700;
-  --accent: #8a5300;
+  --ink: #1f2a2c;
+  --ink-2: #536164;
+  --line: #dde5e4;
+  /* Tamna tirkizna za trake i pločice, terakota kao akcent */
+  --dark: #0f3a3f;
+  --dark-2: #164b51;
+  --accent: #b9432a;
+  --accent-hover: #9e3720;
+  --accent-soft: #f6a48c;
+  --shadow: 0 12px 34px rgb(15 58 63 / 0.1);
   /* --font-oswald i --font-lato definira Astro (astro.config.mjs → fonts), uz sistemske rezervne fontove. */
   --font-display: var(--font-oswald, 'Arial Narrow', sans-serif);
   --font-sans: var(--font-lato, system-ui, sans-serif);
@@ -43,28 +45,34 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Naslovi: teški Lato velikim slovima (kao „TEACHING PHILOSOPHY”) */
 h1,
 h2 {
-  font-family: var(--font-display);
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: 900;
   line-height: 1.1;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   margin: 0 0 0.5em;
   text-wrap: balance;
 }
 h1 {
-  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
 }
 h2 {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-size: clamp(1.7rem, 3.6vw, 2.4rem);
 }
 h3 {
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: clamp(1.2rem, 2vw, 1.4rem);
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
   line-height: 1.3;
   margin: 0 0 0.5em;
+}
+h1 em,
+h2 em {
+  font-style: normal;
+  color: var(--accent);
 }
 h3 a {
   color: var(--ink);
@@ -72,11 +80,6 @@ h3 a {
 h3 a:hover {
   color: var(--accent);
   text-decoration: none;
-}
-h1 em,
-h2 em {
-  font-style: normal;
-  color: var(--accent);
 }
 
 p {
@@ -89,12 +92,12 @@ a {
   transition: color 0.15s;
 }
 a:hover {
-  color: var(--ink);
+  color: var(--accent-hover);
   text-decoration: underline;
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -119,57 +122,57 @@ svg {
 }
 .section--dark {
   background: var(--dark);
-  color: #e6e6e6;
+  color: #d7e4e3;
 }
 .section--dark h2,
 .section--dark h3 {
   color: #fff;
 }
 .section--dark a:not(.btn) {
-  color: var(--gold);
+  color: var(--accent-soft);
 }
 .section--dark a:not(.btn):hover {
   color: #fff;
 }
 
-/* Centrirani naslov sekcije: oznaka, naslov, kratka linija, podnaslov */
+/* Naslov sekcije: mala oznaka u boji iznad, krupan naslov ispod (lijevo poravnato) */
 .section-head {
-  text-align: center;
-  max-width: 44rem;
-  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 .section-head h2 {
   margin: 0;
 }
-.section-head h2::after {
-  content: '';
-  display: block;
-  width: 3rem;
-  height: 3px;
-  margin: 1rem auto 0;
-  background: var(--gold);
-}
 .section-head p {
-  margin: 1rem 0 0;
+  margin: 0.6rem 0 0;
   color: var(--ink-2);
+  max-width: 40rem;
 }
-.section-head .more {
-  display: inline-block;
-  margin-top: 1rem;
+.section--dark .section-head p {
+  color: #b9cfcd;
+}
+.section-head--center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .label {
   display: block;
   font-family: var(--font-sans);
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 .section--dark .label {
-  color: var(--gold);
+  color: var(--accent-soft);
 }
 
 .lead {
@@ -186,40 +189,48 @@ svg {
   font-size: 0.9rem;
 }
 
-/* Dugmad: puna topla boja, velika slova */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 48px;
   padding: 0.75rem 1.6rem;
-  border: 2px solid var(--gold);
+  border: 2px solid var(--accent);
   border-radius: 0;
-  background: var(--gold);
-  color: var(--ink);
+  background: var(--accent);
+  color: #fff;
   font: inherit;
   font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 .btn:hover {
-  background: var(--gold-hover);
-  border-color: var(--gold-hover);
-  color: var(--ink);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #fff;
   text-decoration: none;
 }
 .btn--line {
   background: transparent;
   border-color: var(--ink);
+  color: var(--ink);
 }
 .btn--line:hover {
   background: var(--ink);
   border-color: var(--ink);
   color: #fff;
+}
+.section--dark .btn--line {
+  border-color: #fff;
+  color: #fff;
+}
+.section--dark .btn--line:hover {
+  background: #fff;
+  color: var(--dark);
 }
 .btn-row {
   display: flex;
@@ -227,15 +238,50 @@ svg {
   gap: 0.75rem;
 }
 
+/* „Pročitaj više >” */
 .more {
   font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 .more::after {
-  content: ' →';
+  content: ' ›';
+  font-size: 1.1em;
+}
+
+/* Stavka s linijom ispred naslova (kao „—— KineoLab Adult Class”) */
+.line-item h3 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  margin-bottom: 0.25rem;
+}
+.line-item h3::before {
+  content: '';
+  flex: none;
+  width: 3rem;
+  height: 3px;
+  background: var(--accent);
+}
+.line-item .caption {
+  margin: 0 0 0.75rem calc(3rem + 1rem);
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.line-item .body {
+  margin-left: calc(3rem + 1rem);
+}
+@media (max-width: 40rem) {
+  .line-item h3::before {
+    width: 1.5rem;
+  }
+  .line-item .caption,
+  .line-item .body {
+    margin-left: calc(1.5rem + 1rem);
+  }
 }
 
 /* Redovi: godina lijevo, sadržaj desno */
@@ -259,8 +305,8 @@ svg {
   }
 }
 .row-year {
-  font-family: var(--font-display);
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: 900;
   font-size: 1.6rem;
   line-height: 1.1;
   color: var(--accent);
@@ -273,7 +319,7 @@ svg {
 .tagline {
   font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-2);
   display: flex;
@@ -284,6 +330,90 @@ svg {
 }
 .tagline .role {
   color: var(--accent);
+}
+
+/* Kartice (kao „Documents and writings”): bijela, sjena, oznaka preko slike */
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgb(15 58 63 / 0.16);
+}
+.card-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background:
+    repeating-linear-gradient(135deg, rgb(255 255 255 / 0.05) 0 2px, transparent 2px 14px),
+    linear-gradient(150deg, var(--dark-2), var(--dark));
+  color: #fff;
+}
+.card-media--text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  font-weight: 900;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.9);
+}
+.card-tag {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  z-index: 1;
+  padding: 0.3rem 1rem;
+  background: var(--white);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 2rem 1.6rem 1.6rem;
+}
+.card-body h3 {
+  margin-bottom: 0.5rem;
+}
+.card-body h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.card-body .more {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover {
+    transition: none;
+    transform: none;
+  }
 }
 
 .facts {
@@ -311,7 +441,7 @@ svg {
 
 .grid {
   display: grid;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  gap: clamp(1.5rem, 3vw, 2.25rem);
 }
 @media (min-width: 44rem) {
   .grid--2 {
@@ -332,12 +462,12 @@ svg {
 }
 .prose h2 {
   margin-top: 1.8em;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 }
 .prose blockquote {
   margin: 1.5em 0;
   padding: 1rem 1.25rem;
-  border-left: 4px solid var(--gold);
+  border-left: 4px solid var(--accent);
   background: var(--paper-2);
 }
 .prose blockquote p:last-child {

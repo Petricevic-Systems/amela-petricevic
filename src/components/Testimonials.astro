@@ -1,53 +1,89 @@
 ---
+// Preporuke kao bijele kartice na tamnoj traci (kao „STUDENT FEEDBACK”).
+// Prikazuju se samo preporuke za koje je osoba dala dozvolu (permission: true).
 import { getCollection } from 'astro:content';
 import SampleTag from './SampleTag.astro';
 
-// Prikazuju se samo preporuke za koje je osoba dala dozvolu (permission: true).
+interface Props {
+  title?: string;
+  label?: string;
+}
+const { title = 'Šta kažu kolege i partneri', label = 'Utisci' } = Astro.props;
 const items = (await getCollection('preporuke')).filter((t) => t.data.permission);
 ---
 
 {
   items.length > 0 && (
-    <div class="grid grid--3">
-      {items.map(({ data }) => (
-        <figure class="quote">
-          <blockquote>
-            <p>„{data.quote}”</p>
-          </blockquote>
-          <figcaption>
-            <span class="who">{data.author}</span>
-            <span class="muted">{data.role}</span>
-            <SampleTag show={data.sample} />
-          </figcaption>
-        </figure>
-      ))}
-    </div>
+    <section class="section section--dark feedback">
+      <div class="wrap">
+        <div class="section-head section-head--center">
+          <div>
+            <span class="label">{label}</span>
+            <h2>{title}</h2>
+          </div>
+        </div>
+        <ul class="grid grid--3 quotes">
+          {items.map(({ data }) => (
+            <li>
+              <figure class="quote">
+                <span class="mark" aria-hidden="true">
+                  „
+                </span>
+                <figcaption>
+                  <strong>{data.author}</strong>
+                  <span class="muted small">{data.role}</span>
+                  <SampleTag show={data.sample} />
+                </figcaption>
+                <blockquote>
+                  <p>{data.quote}</p>
+                </blockquote>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   )
 }
 
 <style>
+  .quotes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: start;
+  }
   .quote {
+    position: relative;
     margin: 0;
-    padding-top: 1.25rem;
-    border-top: 3px solid var(--gold);
+    background: var(--white);
+    color: var(--ink);
+    padding: 2rem 1.75rem 1.75rem;
+    text-align: center;
+    box-shadow: var(--shadow);
   }
-  blockquote {
-    margin: 0 0 1.25rem;
-    font-size: 1.2rem;
-    font-style: italic;
-    line-height: 1.5;
-  }
-  blockquote p {
-    margin: 0;
+  .mark {
+    position: absolute;
+    top: 0.25rem;
+    right: 1.25rem;
+    font-family: Georgia, serif;
+    font-size: 4.5rem;
+    line-height: 1;
+    color: var(--accent-soft);
   }
   figcaption {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.2rem 0.6rem;
+    flex-direction: column;
     align-items: center;
-    font-size: 0.9rem;
+    gap: 0.15rem;
+    margin-bottom: 1rem;
   }
-  .who {
-    font-weight: 500;
+  blockquote {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.98rem;
+  }
+  blockquote p {
+    margin: 0;
   }
 </style>

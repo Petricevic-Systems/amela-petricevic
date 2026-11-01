@@ -51,7 +51,7 @@ const jsonLd = [person, ...schema];
       // Demo verzija se ne indeksira u pretraživačima dok je sampleContent uključen.
       (noindex || site.sampleContent) && <meta name="robots" content="noindex" />
     }
-    <meta name="theme-color" content="#14213d" />
+    <meta name="theme-color" content="#0f3a3f" />
     <link rel="icon" href={link('/favicon.svg')} type="image/svg+xml" />
     <link rel="sitemap" href={link('/sitemap-index.xml')} />
 
@@ -67,7 +67,7 @@ const jsonLd = [person, ...schema];
     <meta name="twitter:card" content="summary_large_image" />
 
     <Font cssVariable="--font-oswald" preload={[{ subset: 'latin' }, { subset: 'latin-ext' }]} />
-    <Font cssVariable="--font-lato" preload={[{ subset: 'latin', weight: 400 }, { subset: 'latin-ext', weight: 400 }]} />
+    <Font cssVariable="--font-lato" preload={[{ subset: 'latin', weight: 400 }, { subset: 'latin', weight: 900 }]} />
 
     {
       site.analytics.plausibleDomain && (

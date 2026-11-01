@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
       <p class="name">{site.name}</p>
       <p class="small muted">Učiteljica • Trenerica nastavnika • Autorica projekata</p>
     </div>
-    <nav aria-label="Podnožje">
+    <nav aria-label="Stranice u podnožju">
       <p class="col-label">Stranice</p>
       <ul>
         {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
@@ -26,8 +26,10 @@ const year = new Date().getFullYear();
   </div>
   <div class="legal">
     <div class="wrap legal-inner">
-      <p>Copyright © {year} {site.name}</p>
-      <p>Bez kolačića za praćenje</p>
+      <p>Copyright © {year}. {site.name}</p>
+      <ul class="legal-nav" aria-label="Brzi linkovi">
+        {nav.slice(0, 4).map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
     </div>
   </div>
 </footer>
@@ -56,7 +58,7 @@ const year = new Date().getFullYear();
     }
   }
   .name {
-    font-weight: 700;
+    font-weight: 900;
     font-size: 1.25rem;
     margin-bottom: 0.4rem;
   }
@@ -70,21 +72,30 @@ const year = new Date().getFullYear();
     margin: 0;
   }
   li {
-    padding-block: 0.25rem;
+    padding-block: 0.3rem;
   }
   .legal {
     border-top: 1px solid var(--line);
     font-size: 0.85rem;
-    color: var(--ink-2);
   }
   .legal-inner {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: 0.5rem 2rem;
     padding-block: 1.25rem;
   }
   .legal p {
     margin: 0;
+    font-weight: 700;
+  }
+  .legal-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.5rem;
+  }
+  .legal-nav li {
+    padding: 0;
   }
 </style>

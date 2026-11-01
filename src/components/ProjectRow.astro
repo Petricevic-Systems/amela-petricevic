@@ -1,4 +1,5 @@
 ---
+// Projekat kao stavka s linijom ispred naslova; ispod: godina, uloga, partneri, opis, rezultat.
 import { render, type CollectionEntry } from 'astro:content';
 import { roleLabels } from '../i18n/bs';
 import SampleTag from './SampleTag.astro';
@@ -6,38 +7,53 @@ import SourceLink from './SourceLink.astro';
 
 interface Props {
   project: CollectionEntry<'projekti'>;
+  /** false = samo naslov, godina, uloga i rezultat (za početnu). */
+  full?: boolean;
 }
-const { project } = Astro.props;
+const { project, full = true } = Astro.props;
 const { title, year, yearEnd, role, partners, outcome, source, sample } = project.data;
 const years = yearEnd ? `${year}–${yearEnd}` : String(year);
 const { Content } = await render(project);
 ---
 
-<li class="row" id={project.id}>
-  <div class="row-year">{years}</div>
-  <div>
-    <p class="tagline">
-      <span class="role">{role === 'pokretačica' ? '★ ' : ''}{roleLabels[role]}</span>
-      {partners.length > 0 && <span>{partners.join(' · ')}</span>}
-      <SampleTag show={sample} />
-    </p>
-    <h3>{title}</h3>
-    <div class="body"><Content /></div>
-    <p class="result"><strong>Rezultat.</strong> {outcome}</p>
-    <SourceLink href={source} />
+<li class="line-item project" id={project.id}>
+  <h3>{title}</h3>
+  <p class="caption">
+    <strong class="years">{years}</strong> · <span class="role">{role === 'pokretačica' ? '★ ' : ''}{roleLabels[role]}</span>
+    {partners.length > 0 && <> · {partners.join(', ')}</>}
+    <SampleTag show={sample} />
+  </p>
+  <div class="body">
+    {full && <div class="desc"><Content /></div>}
+    <p class="result"><strong>Rezultat:</strong> {outcome}</p>
+    {full && <SourceLink href={source} />}
   </div>
 </li>
 
 <style>
-  .body {
-    max-width: 44rem;
-    color: var(--ink-2);
+  .project {
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--line);
   }
-  .body :global(p) {
+  .project:first-child {
+    padding-top: 0;
+  }
+  .years {
+    color: var(--ink);
+  }
+  .role {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .desc {
+    color: var(--ink-2);
+    max-width: 46rem;
+  }
+  .desc :global(p) {
     margin-bottom: 0.6rem;
   }
   .result {
-    max-width: 44rem;
+    max-width: 46rem;
     margin-bottom: 0.25rem;
   }
 </style>

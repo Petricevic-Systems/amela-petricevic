@@ -9,9 +9,9 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 const host = new URL(site.url).host;
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <rect width="1200" height="630" fill="#f7f5f0"/>
-  <rect x="0" y="470" width="1200" height="160" fill="#14213d"/>
-  <text x="80" y="150" font-family="Segoe UI, Arial, sans-serif" font-size="24" letter-spacing="5" fill="#a8461f">UČITELJICA · TRENERICA NASTAVNIKA · AUTORICA PROJEKATA</text>
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="0" y="470" width="1200" height="160" fill="#0f3a3f"/>
+  <text x="80" y="150" font-family="Segoe UI, Arial, sans-serif" font-size="24" letter-spacing="5" fill="#c2492e">UČITELJICA · TRENERICA NASTAVNIKA · AUTORICA PROJEKATA</text>
   <text x="76" y="330" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="112" letter-spacing="-4" fill="#161616">${esc(site.name)}</text>
   <text x="80" y="400" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#4a4a48">Edukacije · Radionice · Projekti · Mediji</text>
   <text x="80" y="562" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#ffffff">${esc(host)}</text>

@@ -1,7 +1,10 @@
 ---
 import { link } from '../utils/url';
 import { Font } from 'astro:assets';
+import '../styles/fonts.css';
 import '../styles/global.css';
+import latoRegular from '../assets/fonts/lato-regular.woff2?url';
+import latoBlack from '../assets/fonts/lato-black.woff2?url';
 import site from '../data/site.json';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -67,8 +70,8 @@ const jsonLd = [person, ...schema];
     <meta name="twitter:card" content="summary_large_image" />
 
     <Font cssVariable="--font-oswald" preload={[{ subset: 'latin' }, { subset: 'latin-ext' }]} />
-    <Font cssVariable="--font-montserrat" preload={[{ subset: 'latin' }, { subset: 'latin-ext' }]} />
-    <Font cssVariable="--font-inter" preload={[{ subset: 'latin' }, { subset: 'latin-ext' }]} />
+    <link rel="preload" href={latoRegular} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={latoBlack} as="font" type="font/woff2" crossorigin />
 
     {
       site.analytics.plausibleDomain && (

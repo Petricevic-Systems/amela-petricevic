@@ -1,0 +1,4 @@
+Lato 2.015 — Copyright (c) 2010-2015 Łukasz Dziedzic (www.latofonts.com).
+Licensed under the SIL Open Font License, Version 1.1 — https://openfontlicense.org
+Files here are subsets (Latin + Latin Extended-A, incl. č ć đ š ž) of the original fonts.
+Google Fonts serves the older Lato 1.104, which lacks č and đ; that is why Lato is self-hosted.

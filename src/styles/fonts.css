@@ -1,0 +1,23 @@
+/* Lato 2.0 (OFL) — samohostovan jer Google Fonts nudi stariju verziju bez č i đ.
+   Datoteke su podskupovi: latinica + Latin Extended-A (č ć đ š ž …). */
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/lato-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/lato-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/lato-black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}

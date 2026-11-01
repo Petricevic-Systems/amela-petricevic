@@ -17,8 +17,8 @@
   --shadow: 0 10px 30px rgb(20 20 20 / 0.07);
   /* Fontove definira Astro (astro.config.mjs → fonts); svi podržavaju č, ć, đ, š, ž. */
   --font-display: var(--font-oswald, 'Arial Narrow', sans-serif);
-  --font-head: var(--font-montserrat, system-ui, sans-serif);
-  --font-sans: var(--font-inter, system-ui, sans-serif);
+  --font-head: 'Lato', system-ui, sans-serif;
+  --font-sans: 'Lato', system-ui, sans-serif;
   --wrap: 72rem;
   --gutter: clamp(1rem, 4vw, 2.5rem);
 }
